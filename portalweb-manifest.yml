@@ -1,0 +1,14 @@
+--- 
+applications: 
+  - 
+    buildpack: java_buildpack
+    instances: 1
+    memory: 750M
+    name: portalweb
+    path: C:\Users\jerry.hagen\Documents\GitHub\portalweb\build\libs\portalweb-0.0.1-SNAPSHOT.jar
+    services: 
+      - cw-portal-config-server
+      - cw-portal-service-registry
+    timeout: 180
+    env:
+      APP_VERSION: blue
