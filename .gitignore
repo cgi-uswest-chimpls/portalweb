@@ -54,3 +54,14 @@ hs_err_pid*
 /dist/
 /nbdist/
 /.nb-gradle/
+*.lock
+.gradle/4.5.1/fileContent/fileContent.lock
+.gradle/4.5.1/fileHashes/fileHashes.bin
+.gradle/4.5.1/fileHashes/fileHashes.lock
+.gradle/4.5.1/fileHashes/resourceHashesCache.bin
+.gradle/4.5.1/taskHistory/taskHistory.bin
+.gradle/4.5.1/taskHistory/taskHistory.lock
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/4.5.1/fileContent/fileContent.lock
+*.lock
+*.bin
