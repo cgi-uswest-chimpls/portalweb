@@ -66,5 +66,46 @@
 			</div>
 		</div>
 		
+		<script id="placementsTemplate" type="text/x-handlebars-template">
+			{{#each this}}
+				<div class="kids-row-format">
+				<div class="row">
+					<div class="col-sm-2">
+						{{idprsn}}
+					</div>
+					<div class="col-sm-5">
+						<div class="row">
+							<div class="col-sm-2">
+
+							</div>
+							<div class="col-sm-10">
+								{{idprsn}}
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-2">
+
+							</div>
+							<div class="col-sm-10">
+								Age:
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-2">
+
+							</div>
+							<div class="col-sm-10">
+								Date Placed: {{formatDateSlashes dtbgn}}
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-5">
+						Schedule block
+					</div>
+				</div>
+				</div>
+			{{/each}}
+		</script>
+		
 	</body>
 </html>
