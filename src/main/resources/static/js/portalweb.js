@@ -6,7 +6,9 @@ function loadProvider() {
 	
 	registerHandlebarsHelpers();
 	
-	var idprvdorg = 9000000; // get dynamically
+	var idprvdorg = 7000001; // get dynamically
+
+	loadProviderDetails(idprvdorg);
 	
 	loadProviderPlacements(idprvdorg);
 
@@ -25,6 +27,28 @@ function registerHandlebarsHelpers() {
 
 		  return new Handlebars.SafeString(month + "/" + day + "/" + year);
 	});
+	
+}
+
+function loadProviderDetails(idprvdorg) {
+	
+    $.ajax({
+        //url: 'providerdetail/' + idprvdorg,
+        url: 'providerdetail/all',
+    	datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	
+        	var data = JSON.stringify(result);
+        	$('#divProviderDetail').html(data);
+        	
+        	//$('#divChildrenInPlacement').html(handlebars_placementsTemplate(result));
+        },
+        error: function () {
+        	$('#divProviderDetail').html("An error occurred trying to access the endpoint " + 'providerdetail/all');
+        }
+    });
 	
 }
 

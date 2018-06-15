@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cgi.uswest.chimpls.portalweb.objects.Episode;
+import com.cgi.uswest.chimpls.portalweb.objects.ProviderDetail;
 import com.cgi.uswest.chimpls.portalweb.clients.PlacementsClient;
+import com.cgi.uswest.chimpls.portalweb.clients.ProviderDetailClient;
 
 @RefreshScope
 @RestController
@@ -19,9 +21,18 @@ public class PortalwebApplicationController {
 	@Autowired
 	private PlacementsClient placementsClient;
 	
+	@Autowired
+	private ProviderDetailClient providerDetailClient;
+	
 	  @RequestMapping("placements/episodesByProvider/{idprvdorg}") 
 	   public List<Episode> findEpisodesByProvider(@PathVariable("idprvdorg") String idprvdorg) {
 		  return placementsClient.getEpisodesByProvider(idprvdorg);
 	  }
+	  
+	  @RequestMapping("providerdetail/all")
+	   public List<ProviderDetail> findProviderDetailsAll() {
+		  return providerDetailClient.getProviderDetailsAll();
+	  }
+	  
 	
 }
