@@ -2,19 +2,20 @@
  * CSS for Portalweb App (applied in template and base page code)
  */
 
-kids-row-format {
+.kids-row-format {
 	padding-top: 10px;
 	padding-bottom: 10px;
-	border-right: 2px solid gray;
-	border-bottom: 2px solid gray;
+	margin-bottom: 5px;
+	border: 1px solid gray;
+	color: #3264CD;
 }
 
-cw-portal-navbar-image-div > a > img {
+.cw-portal-navbar-image {
 	border-radius: 50%;
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
 
-cw-portal-navbar {
-
+.cw-portal-navbar {
+	background-color: #003366;
 }

@@ -6,7 +6,7 @@ function loadProvider() {
 	
 	registerHandlebarsHelpers();
 	
-	var idprvdorg = 7000001; // get dynamically
+	var idprvdorg = 9000000; // get dynamically
 
 	loadProviderDetails(idprvdorg);
 	
