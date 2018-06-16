@@ -17,4 +17,8 @@ public interface ProviderDetailClient {
     		consumes = "application/json")
     List<ProviderDetail> getProviderDetailsAll();
     
+    @RequestMapping(method = RequestMethod.GET, value = "/providerDetails/{idprvdorg}", 
+    		consumes = "application/json")
+    ProviderDetail getProviderDetailsForIdPrvdOrg(@PathVariable("idprvdorg") String idprvdorg);
+    
 }

@@ -34,5 +34,9 @@ public class PortalwebApplicationController {
 		  return providerDetailClient.getProviderDetailsAll();
 	  }
 	  
-	
+	  @RequestMapping("providerdetail/{idprvdorg}")
+	   public ProviderDetail findProviderDetailsForIdPrvdOrg(@PathVariable("idprvdorg") String idprvdorg) {
+		  return providerDetailClient.getProviderDetailsForIdPrvdOrg(idprvdorg);
+	  }
+	  
 }

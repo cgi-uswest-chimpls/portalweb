@@ -1,12 +1,14 @@
 var handlebars_placementsTemplate;
+var handlebars_providerDetailsTemplate;
 
 function loadProvider() {
 	
 	handlebars_placementsTemplate = Handlebars.compile($('#placementsTemplate').html());
+	handlebars_providerDetailsTemplate = Handlebars.compile($('#providerDetailsTemplate').html());
 	
 	registerHandlebarsHelpers();
 	
-	var idprvdorg = 9000000; // get dynamically
+	var idprvdorg = 7000000; // get dynamically
 
 	loadProviderDetails(idprvdorg);
 	
@@ -33,20 +35,19 @@ function registerHandlebarsHelpers() {
 function loadProviderDetails(idprvdorg) {
 	
     $.ajax({
-        //url: 'providerdetail/' + idprvdorg,
-        url: 'providerdetail/all',
+        url: 'providerdetail/' + idprvdorg,
     	datatype: 'json',
         type: "get",
         contentType: "application/json",
         success: function (result) {
         	
         	var data = JSON.stringify(result);
-        	$('#divProviderDetail').html(data);
+        	//$('#divProviderDetail').html(data);
         	
-        	//$('#divChildrenInPlacement').html(handlebars_placementsTemplate(result));
+        	$('#divProviderDetail').html(handlebars_providerDetailsTemplate(result));
         },
         error: function () {
-        	$('#divProviderDetail').html("An error occurred trying to access the endpoint " + 'providerdetail/all');
+        	$('#divProviderDetail').html("An error occurred trying to access the endpoint " + 'providerdetail/' + idprvdorg);
         }
     });
 	
