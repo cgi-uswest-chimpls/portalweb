@@ -6,8 +6,19 @@
 	padding-top: 10px;
 	padding-bottom: 10px;
 	margin-bottom: 5px;
-	border: 1px solid gray;
+	box-shadow: 1px 1px;
 	color: #3264CD;
+}
+
+.kid-profile {
+	background-color: #98b1e6;
+	min-height: 75px;
+	color: #003366 !important;
+}
+
+.schedule-divider {
+	border-left: 1px gray;
+	padding-left: 5px;
 }
 
 .cw-portal-navbar-image {
