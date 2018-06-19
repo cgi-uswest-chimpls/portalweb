@@ -8,7 +8,7 @@ function loadProvider() {
 	
 	registerHandlebarsHelpers();
 	
-	var idprvdorg = 7000000; // get dynamically
+	var idprvdorg = 7000000; // get dynamically after login page is developed
 
 	loadProviderDetails(idprvdorg);
 	
@@ -66,10 +66,38 @@ function loadProviderPlacements(idprvdorg) {
         	//$('#divChildrenInPlacement').html(data);
         	
         	$('#divChildrenInPlacement').html(handlebars_placementsTemplate(result));
+        	
+        	for(var i = 0; i < result.length; i++) {
+        	    var obj = result[i];
+
+        	    loadChildInPlacementData(obj.idprsn);
+        	}
+        	
         },
         error: function () {
         	$('#divChildrenInPlacement').html("An error occurred trying to access the endpoint " + 'placements/episodesByProvider/' + idprvdorg);
         }
     });
+	
+}
+
+function loadChildInPlacementData(idprsn) {
+
+    $.ajax({
+        url: 'person/' + idprsn,
+        datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	
+        	var data = JSON.stringify(result);
+        	//$('#divChildrenInPlacement').html(data);
+        	
+        	$('#divChildName'+idprsn).html(data);
+        },
+        error: function () {
+        	$('#divChildName').html("An error occurred trying to access the endpoint " + 'person/' + idprsn);
+        }
+    });	
 	
 }

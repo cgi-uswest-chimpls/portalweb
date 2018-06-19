@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cgi.uswest.chimpls.portalweb.objects.Episode;
+import com.cgi.uswest.chimpls.portalweb.objects.Person;
 import com.cgi.uswest.chimpls.portalweb.objects.ProviderDetail;
+import com.cgi.uswest.chimpls.portalweb.clients.PersonClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PlacementsClient;
 import com.cgi.uswest.chimpls.portalweb.clients.ProviderDetailClient;
 
@@ -23,6 +25,9 @@ public class PortalwebApplicationController {
 	
 	@Autowired
 	private ProviderDetailClient providerDetailClient;
+	
+	@Autowired
+	private PersonClient personClient;
 	
 	  @RequestMapping("placements/episodesByProvider/{idprvdorg}") 
 	   public List<Episode> findEpisodesByProvider(@PathVariable("idprvdorg") String idprvdorg) {
@@ -37,6 +42,11 @@ public class PortalwebApplicationController {
 	  @RequestMapping("providerdetail/{idprvdorg}")
 	   public ProviderDetail findProviderDetailsForIdPrvdOrg(@PathVariable("idprvdorg") String idprvdorg) {
 		  return providerDetailClient.getProviderDetailsForIdPrvdOrg(idprvdorg);
+	  }
+	  
+	  @RequestMapping("person/{idprsn}")
+	   public Person findPersonDetailsForIdprsn(@PathVariable("idprsn") String idprsn) {
+		  return personClient.getPersonDataByIdprsn(idprsn);
 	  }
 	  
 }
