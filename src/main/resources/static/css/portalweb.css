@@ -40,6 +40,9 @@
 .cw-portal-navbar-image {
 	border-radius: 50%;
 	border: 2px solid white;
+}
+
+.cw-portal-navbar-image-div {
 	padding-top: 5px;
 	padding-bottom: 5px;
 }

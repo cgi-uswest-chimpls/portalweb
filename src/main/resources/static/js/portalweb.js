@@ -8,7 +8,7 @@ function loadProvider() {
 	
 	registerHandlebarsHelpers();
 	
-	var idprvdorg = 7000000; // get dynamically after login page is developed
+	var idprvdorg = 7000001; // get dynamically after login page is developed
 
 	loadProviderDetails(idprvdorg);
 	
@@ -45,9 +45,12 @@ function loadProviderDetails(idprvdorg) {
         	//$('#divProviderDetail').html(data);
         	
         	$('#divProviderDetail').html(handlebars_providerDetailsTemplate(result));
+        	$('#divProviderDetailImage').html('<img alt="' + result.nm_prvd
+        			+ '" class="img-circle cw-portal-navbar-image" src="'
+        			+ result.tximagelink + '" />');
         },
         error: function () {
-        	$('#divProviderDetail').html("An error occurred trying to access the endpoint " + 'providerdetail/' + idprvdorg);
+        	$('#divProviderDetail').html("<div style='color:white;'>An error occurred trying to access the endpoint " + 'providerdetail/' + idprvdorg + "</div>");
         }
     });
 	
