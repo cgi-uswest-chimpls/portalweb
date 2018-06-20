@@ -54,7 +54,7 @@ function loadProviderDetails(idprvdorg) {
 }
 
 function loadProviderPlacements(idprvdorg) {
-	
+
     $.ajax({
         url: 'placements/episodesByProvider/' + idprvdorg,
         datatype: 'json',
@@ -63,15 +63,16 @@ function loadProviderPlacements(idprvdorg) {
         success: function (result) {
         	
         	var data = JSON.stringify(result);
-        	//$('#divChildrenInPlacement').html(data);
-        	
+
         	$('#divChildrenInPlacement').html(handlebars_placementsTemplate(result));
+        	
         	
         	for(var i = 0; i < result.length; i++) {
         	    var obj = result[i];
 
         	    loadChildInPlacementData(obj.idprsn);
         	}
+        	
         	
         },
         error: function () {
@@ -90,13 +91,13 @@ function loadChildInPlacementData(idprsn) {
         contentType: "application/json",
         success: function (result) {
         	
-        	var data = JSON.stringify(result);
-        	//$('#divChildrenInPlacement').html(data);
-        	
-        	$('#divChildName'+idprsn).html(data);
+        	$('#divChildName'+idprsn).html(result.nmfrst + ' ' + result.nmlst);
+        	$('#divChildPlan'+idprsn).html(result.nmfrst + "'s Plan");   
+        	$('#divChildAge'+idprsn).html('Age: ' + result.qtage);
+        	$('#divChildImage'+idprsn).html('<img src="'+result.tximagelink+'" class="img-circle cw-portal-navbar-image" ></img>');
         },
         error: function () {
-        	$('#divChildName').html("An error occurred trying to access the endpoint " + 'person/' + idprsn);
+        	$('#divChildName'+idprsn).html("An error occurred trying to access the endpoint " + 'person/' + idprsn);
         }
     });	
 	
