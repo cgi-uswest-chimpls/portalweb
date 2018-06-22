@@ -13,11 +13,12 @@ public class Episode {
 	private Timestamp dtend;
 	private Timestamp dtrmvl;
 	private String flrmvl;
+	private String idcase;
 	
 	Episode() {}
 
 	public Episode(String idepsd, String idprsn, BigDecimal amrate, String idprvdorg,
-			Timestamp dtbgn, Timestamp dtend, Timestamp dtrmvl, String flrmvl) {
+			Timestamp dtbgn, Timestamp dtend, Timestamp dtrmvl, String flrmvl, String idcase) {
 		super();
 		this.idepsd = idepsd;
 		this.idprsn = idprsn;
@@ -27,6 +28,7 @@ public class Episode {
 		this.dtend = dtend;
 		this.dtrmvl = dtrmvl;
 		this.flrmvl = flrmvl;
+		this.idcase = idcase;
 	}
 	
 	public String getIdepsd() {
@@ -86,6 +88,14 @@ public class Episode {
 
 	public void setFlrmvl(String flrmvl) {
 		this.flrmvl = flrmvl;
+	}
+
+	public String getIdcase() {
+		return idcase;
+	}
+
+	public void setIdcase(String idcase) {
+		this.idcase = idcase;
 	}	
 	
 }

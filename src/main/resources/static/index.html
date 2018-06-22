@@ -58,17 +58,6 @@
 		
 		<div id="divChildrenInPlacement">
 
-			<div class="container-fluid">
-	
-				<div class="row">
-					<div class="col-sm-6">
-						This is the children in placement div
-					</div>
-					<div class="col-sm-6">
-						
-					</div>
-				</div>
-			</div>
 		</div>
 		
 		<script id="placementsTemplate" type="text/x-handlebars-template">
@@ -120,6 +109,14 @@
 								Date Placed: {{formatDateSlashes dtbgn}}
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-sm-2">
+
+							</div>
+							<div class="col-sm-10">
+								<div id="divPrimaryCaseWorker{{idprsn}}"></div>
+							</div>
+						</div>
 					</div>
 					<div class="schedule-divider">
 					<div class="col-sm-5">
@@ -152,6 +149,11 @@
 						<div class="provider-license">
 							{{tx_license}}
 						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div id="divPrimaryProviderWorker" class="provider-license"></div>
 					</div>
 				</div>
 			</div>

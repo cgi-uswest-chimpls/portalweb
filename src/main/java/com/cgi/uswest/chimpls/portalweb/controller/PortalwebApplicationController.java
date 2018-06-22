@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cgi.uswest.chimpls.portalweb.objects.Assignment;
 import com.cgi.uswest.chimpls.portalweb.objects.Episode;
 import com.cgi.uswest.chimpls.portalweb.objects.Person;
 import com.cgi.uswest.chimpls.portalweb.objects.ProviderDetail;
+import com.cgi.uswest.chimpls.portalweb.clients.AssignmentClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PersonClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PlacementsClient;
 import com.cgi.uswest.chimpls.portalweb.clients.ProviderDetailClient;
@@ -28,6 +30,9 @@ public class PortalwebApplicationController {
 	
 	@Autowired
 	private PersonClient personClient;
+	
+	@Autowired
+	private AssignmentClient assignmentClient;
 	
 	  @RequestMapping("placements/episodesByProvider/{idprvdorg}") 
 	   public List<Episode> findEpisodesByProvider(@PathVariable("idprvdorg") String idprvdorg) {
@@ -47,6 +52,16 @@ public class PortalwebApplicationController {
 	  @RequestMapping("person/{idprsn}")
 	   public Person findPersonDetailsForIdprsn(@PathVariable("idprsn") String idprsn) {
 		  return personClient.getPersonDataByIdprsn(idprsn);
+	  }
+	  
+	  @RequestMapping("providerPrimaryAssignment/{idprvdorg}")
+	   public Assignment findPrimaryProviderAssignmentForIdPrvdOrg(@PathVariable("idprvdorg") String idprvdorg) {
+		  return assignmentClient.getProviderPrimaryAssignmentDataByIdprvdorg(idprvdorg);
+	  }
+	  
+	  @RequestMapping("casePrimaryAssignment/{idcase}")
+	   public Assignment findPrimaryCaseAssignmentForIdCase(@PathVariable("idcase") String idcase) {
+		  return assignmentClient.getCasePrimaryAssignmentDataByIdcase(idcase);
 	  }
 	  
 }

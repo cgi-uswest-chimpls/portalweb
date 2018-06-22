@@ -8,7 +8,7 @@ function loadProvider() {
 	
 	registerHandlebarsHelpers();
 	
-	var idprvdorg = 7000001; // get dynamically after login page is developed
+	var idprvdorg = 7000000; // get dynamically after login page is developed
 
 	loadProviderDetails(idprvdorg);
 	
@@ -48,6 +48,8 @@ function loadProviderDetails(idprvdorg) {
         	$('#divProviderDetailImage').html('<img alt="' + result.nm_prvd
         			+ '" class="img-circle cw-portal-navbar-image" src="'
         			+ result.tximagelink + '" />');
+        	
+        	loadPrimaryProviderWorker(idprvdorg);
         },
         error: function () {
         	$('#divProviderDetail').html("<div style='color:white;'>An error occurred trying to access the endpoint " + 'providerdetail/' + idprvdorg + "</div>");
@@ -74,6 +76,7 @@ function loadProviderPlacements(idprvdorg) {
         	    var obj = result[i];
 
         	    loadChildInPlacementData(obj.idprsn);
+        	    loadPrimaryCaseWorker(obj.idprsn, obj.idcase);
         	}
         	
         	
@@ -104,4 +107,34 @@ function loadChildInPlacementData(idprsn) {
         }
     });	
 	
+}
+
+function loadPrimaryCaseWorker(idprsn, idcase) {
+    $.ajax({
+        url: 'casePrimaryAssignment/' + idcase,
+        datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	$('#divPrimaryCaseWorker'+idprsn).html("Case Worker: " + result.nm_prsn);
+        },
+        error: function () {
+        	$('#divPrimaryCaseWorker'+idprsn).html("An error occurred trying to access the endpoint " + 'casePrimaryAssignment/' + idcase);
+        }
+    });	
+}
+
+function loadPrimaryProviderWorker(idprvdorg) {
+    $.ajax({
+        url: 'providerPrimaryAssignment/' + idprvdorg,
+        datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	$('#divPrimaryProviderWorker').html("Provider Worker: " + result.nm_prsn);
+        },
+        error: function () {
+        	$('#divPrimaryProviderWorker').html("<div style='color:white;'>An error occurred trying to access the endpoint " + 'providerPrimaryAssignment' + idprvdorg + "</div>");
+        }
+    });	
 }
