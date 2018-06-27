@@ -34,6 +34,9 @@ public class PortalwebApplicationController {
 	@Autowired
 	private AssignmentClient assignmentClient;
 	
+	//@RequestMapping("currentUser")
+	
+	
 	  @RequestMapping("placements/episodesByProvider/{idprvdorg}") 
 	   public List<Episode> findEpisodesByProvider(@PathVariable("idprvdorg") String idprvdorg) {
 		  return placementsClient.getEpisodesByProvider(idprvdorg);

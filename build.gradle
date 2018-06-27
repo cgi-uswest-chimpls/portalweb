@@ -38,6 +38,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.security.oauth:spring-security-oauth2')
 	compile('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure')
+	compile('org.webjars:js-cookie:2.1.4')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 

@@ -3,10 +3,13 @@
 	<head>
 	    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <meta name="google-signin-client_id" 
+	    	content="1017042697580-dsj5jlbu92j32oe1griro89m8d4agdgv.apps.googleusercontent.com">
 	    <title>CW Portal Web UI</title>
 	    
     	<link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
 	    <link href="css/portalweb.css" type="text/css" rel="stylesheet"/>
+	    <link href="fontawesome-free-5.1.0-web/css/all.css" rel="stylesheet">
 
 	    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	    <script src="jquery/jquery-3.3.1.min.js"></script>
@@ -14,9 +17,14 @@
 	    <script src="bootstrap/js/bootstrap.min.js"></script>
 		<script src="handlebars/handlebars-v4.0.11.js"></script>
 		<script src="js/portalweb.js"></script>
+		<script src="https://apis.google.com/js/platform.js" async defer></script>
+		<script src="webjars/js-cookie/2.1.4/js.cookie.js"></script>
 	</head>
 	<body onload="loadProvider();">
-		
+		<div class="unauthenticated">
+			<a href="/login"><span class="fab fa-google"></span>&nbsp;&nbsp;Sign in with Google</a>
+		</div>
+		<div class="authenticated">
 			<div class="navbar navbar-inverse cw-portal-navbar">
 				<div class="container-fluid">
 
@@ -33,8 +41,10 @@
 				      			
 				      		</div>
 				      	</div>
-				      	<div class="col-sm-3">
-				      		
+				      	<div class="col-sm-2">
+				      	</div>
+				      	<div class="col-sm-1">
+				      		<span onclick="logout()"><span class="fa fa-2x fa-sign-out-alt" style="color:white;"></span></span>
 				      	</div>
 				      </div>
 				    
@@ -59,7 +69,7 @@
 		<div id="divChildrenInPlacement">
 
 		</div>
-		
+		</div>
 		<script id="placementsTemplate" type="text/x-handlebars-template">
 			{{#each this}}
 				<div class="kids-row-format">
