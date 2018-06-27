@@ -1,10 +1,15 @@
 package com.cgi.uswest.chimpls.portalweb.controller;
 
+import java.security.Principal;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,8 +39,16 @@ public class PortalwebApplicationController {
 	@Autowired
 	private AssignmentClient assignmentClient;
 	
-	//@RequestMapping("currentUser")
-	
+	  @RequestMapping("/user")
+	  public Map<String, String> user(Principal principal) {
+		  
+		  Map<String, Object> userDetails = 
+				  (Map<String, Object>) ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
+		  
+		  Map<String, String> map = new LinkedHashMap<>();
+		  map.put("sub", (String) userDetails.get("sub"));
+		  return map;
+	  }
 	
 	  @RequestMapping("placements/episodesByProvider/{idprvdorg}") 
 	   public List<Episode> findEpisodesByProvider(@PathVariable("idprvdorg") String idprvdorg) {

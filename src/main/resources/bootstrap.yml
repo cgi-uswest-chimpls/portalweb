@@ -6,6 +6,10 @@ spring:
   cloud:
     config:
       uri: ${vcap.services.cw-portal-config-server.credentials.uri:http://localhost:8888}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
       
 security:
   oauth2:
@@ -20,3 +24,5 @@ security:
       scope: profile email
     resource:
       userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo
+      
+
