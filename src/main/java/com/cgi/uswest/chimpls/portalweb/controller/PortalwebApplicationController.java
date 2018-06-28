@@ -18,6 +18,8 @@ import com.cgi.uswest.chimpls.portalweb.objects.Assignment;
 import com.cgi.uswest.chimpls.portalweb.objects.Episode;
 import com.cgi.uswest.chimpls.portalweb.objects.Person;
 import com.cgi.uswest.chimpls.portalweb.objects.ProviderDetail;
+import com.cgi.uswest.chimpls.portalweb.objects.User;
+import com.cgi.uswest.chimpls.portalweb.repository.UserRepository;
 import com.cgi.uswest.chimpls.portalweb.clients.AssignmentClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PersonClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PlacementsClient;
@@ -39,17 +41,30 @@ public class PortalwebApplicationController {
 	@Autowired
 	private AssignmentClient assignmentClient;
 	
-	  @RequestMapping("/user")
-	  public Map<String, String> user(Principal principal) {
+	@Autowired
+	private UserRepository userRepository;
+	
+	
+	  @RequestMapping("currentUser")
+	  public User user(Principal principal) {
 		  
 		  Map<String, Object> userDetails = 
 				  (Map<String, Object>) ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
+
+		  return userRepository.findUserBySub((String) userDetails.get("sub"));
 		  
-		  Map<String, String> map = new LinkedHashMap<>();
-		  map.put("sub", (String) userDetails.get("sub"));
-		  return map;
 	  }
 	
+	  @RequestMapping("user/sub")
+	  public String userSub(Principal principal) {
+		  
+		  Map<String, Object> userDetails = 
+				  (Map<String, Object>) ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
+
+		  return ((String) userDetails.get("sub"));
+		  
+	  }
+	  
 	  @RequestMapping("placements/episodesByProvider/{idprvdorg}") 
 	   public List<Episode> findEpisodesByProvider(@PathVariable("idprvdorg") String idprvdorg) {
 		  return placementsClient.getEpisodesByProvider(idprvdorg);

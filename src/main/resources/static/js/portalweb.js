@@ -33,11 +33,26 @@ function loadProvider() {
 	
 	registerHandlebarsHelpers();
 	
-	var idprvdorg = 7000000; // get dynamically after login page is developed
-
-	loadProviderDetails(idprvdorg);
+	var idprvdorg;
 	
-	loadProviderPlacements(idprvdorg);
+    $.ajax({
+        url: 'currentUser',
+    	datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	//$('#divProviderDetail').html(JSON.stringify(result));
+        	idprvdorg = result.idprvdorg;
+        	loadProviderDetails(idprvdorg);
+        	loadProviderPlacements(idprvdorg);
+        },
+        error: function () {
+        	$('#divProviderDetail').html("<div style='color:white;'>An error occurred trying to access the endpoint /currentUser");
+        }
+    });
+	
+
+
 
 
 }
