@@ -117,6 +117,7 @@ function loadProviderPlacements(idprvdorg) {
 
         	    loadChildInPlacementData(obj.idprsn);
         	    loadPrimaryCaseWorker(obj.idprsn, obj.idcase);
+        	    loadChildAddressData(obj.idprsn);
         	}
         	
         	
@@ -125,6 +126,24 @@ function loadProviderPlacements(idprvdorg) {
         	$('#divChildrenInPlacement').html("An error occurred trying to access the endpoint " + 'placements/episodesByProvider/' + idprvdorg);
         }
     });
+	
+}
+
+function loadChildAddressData(idprsn) {
+
+    $.ajax({
+        url: 'personAddress/' + idprsn,
+        datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	
+        	$('#divChildAddress'+idprsn).html('Address: '+result.tx_adress);
+        },
+        error: function () {
+        	$('#divChildAddress'+idprsn).html("An error occurred trying to access the endpoint " + 'address/personAddress/' + idprsn);
+        }
+    });	
 	
 }
 

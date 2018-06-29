@@ -1,5 +1,6 @@
 package com.cgi.uswest.chimpls.portalweb.controller;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,12 +15,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cgi.uswest.chimpls.portalweb.objects.Address;
 import com.cgi.uswest.chimpls.portalweb.objects.Assignment;
 import com.cgi.uswest.chimpls.portalweb.objects.Episode;
 import com.cgi.uswest.chimpls.portalweb.objects.Person;
 import com.cgi.uswest.chimpls.portalweb.objects.ProviderDetail;
 import com.cgi.uswest.chimpls.portalweb.objects.User;
 import com.cgi.uswest.chimpls.portalweb.repository.UserRepository;
+import com.cgi.uswest.chimpls.portalweb.clients.AddressClient;
 import com.cgi.uswest.chimpls.portalweb.clients.AssignmentClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PersonClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PlacementsClient;
@@ -44,6 +47,8 @@ public class PortalwebApplicationController {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private AddressClient addressClient;
 	
 	  @RequestMapping("currentUser")
 	  public User user(Principal principal) {
@@ -95,4 +100,13 @@ public class PortalwebApplicationController {
 		  return assignmentClient.getCasePrimaryAssignmentDataByIdcase(idcase);
 	  }
 	  
+	  @RequestMapping("caseAddress/{idcase}")
+	   public Address findCaseAddress(@PathVariable("idcase") BigDecimal idcase) {
+		  return addressClient.getCaseAddressData(idcase);
+	  }
+	  
+	  @RequestMapping("personAddress/{idprsn}")
+	   public Address findPersonAddress(@PathVariable("idprsn") BigDecimal idprsn) {
+		  return addressClient.getPersonAddressData(idprsn);
+	  }
 }
