@@ -20,6 +20,7 @@ import com.cgi.uswest.chimpls.portalweb.objects.Assignment;
 import com.cgi.uswest.chimpls.portalweb.objects.Episode;
 import com.cgi.uswest.chimpls.portalweb.objects.Person;
 import com.cgi.uswest.chimpls.portalweb.objects.ProviderDetail;
+import com.cgi.uswest.chimpls.portalweb.objects.Quicklink;
 import com.cgi.uswest.chimpls.portalweb.objects.User;
 import com.cgi.uswest.chimpls.portalweb.repository.UserRepository;
 import com.cgi.uswest.chimpls.portalweb.clients.AddressClient;
@@ -27,6 +28,7 @@ import com.cgi.uswest.chimpls.portalweb.clients.AssignmentClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PersonClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PlacementsClient;
 import com.cgi.uswest.chimpls.portalweb.clients.ProviderDetailClient;
+import com.cgi.uswest.chimpls.portalweb.clients.QuicklinkClient;
 
 @RefreshScope
 @RestController
@@ -49,6 +51,9 @@ public class PortalwebApplicationController {
 	
 	@Autowired
 	private AddressClient addressClient;
+	
+	@Autowired
+	private QuicklinkClient quicklinkClient;
 	
 	  @RequestMapping("currentUser")
 	  public User user(Principal principal) {
@@ -108,5 +113,10 @@ public class PortalwebApplicationController {
 	  @RequestMapping("personAddress/{idprsn}")
 	   public Address findPersonAddress(@PathVariable("idprsn") BigDecimal idprsn) {
 		  return addressClient.getPersonAddressData(idprsn);
+	  }
+	  
+	  @RequestMapping("quicklinks/{county}")
+	   public List<Quicklink> findQuicklinksByCounty(@PathVariable("county") String county) {
+		  return quicklinkClient.getQuicklinksByCounty(county);
 	  }
 }

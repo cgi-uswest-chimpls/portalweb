@@ -1,5 +1,6 @@
 var handlebars_placementsTemplate;
 var handlebars_providerDetailsTemplate;
+var handlebars_quicklinksTemplate;
 
 $.ajaxSetup({
 	beforeSend : function(xhr, settings) {
@@ -30,6 +31,7 @@ function loadProvider() {
 	
 	handlebars_placementsTemplate = Handlebars.compile($('#placementsTemplate').html());
 	handlebars_providerDetailsTemplate = Handlebars.compile($('#providerDetailsTemplate').html());
+	handlebars_quicklinksTemplate = Handlebars.compile($('#quicklinksTemplate').html());
 	
 	registerHandlebarsHelpers();
 	
@@ -57,6 +59,26 @@ function loadProvider() {
 
 
 
+}
+
+function help() {
+	
+	var userCounty = $('#userCounty').val();
+	
+    $.ajax({
+        url: 'quicklinks/' + userCounty ,
+    	datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	$('#divQuicklinks').html(handlebars_quicklinksTemplate(result));
+        	
+        	$('#quicklinksModal').modal('show')
+        },
+        error: function () {
+        	$('#divQuicklinks').html("<div style='color:white;'>An error occurred trying to access the endpoint /quicklinks/" + userCounty);
+        }
+    });
 }
 
 function registerHandlebarsHelpers() {

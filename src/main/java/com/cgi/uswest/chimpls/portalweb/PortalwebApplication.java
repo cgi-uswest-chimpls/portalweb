@@ -20,9 +20,7 @@ public class PortalwebApplication extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 	    http.authorizeRequests()
-	    	.antMatchers("/login", "/login**", "/webjars/**", "/error**", 
-	    			"/js/**", "handlebars/**", "/css/**", "/bootstrap/**",
-	    			"/fontawesome**").permitAll()
+	    	.antMatchers("/login", "/login**", "/webjars/**", "/error**").permitAll()
 	        .anyRequest().authenticated()
 	        .and().logout().logoutSuccessUrl("/").permitAll()
 	        .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
