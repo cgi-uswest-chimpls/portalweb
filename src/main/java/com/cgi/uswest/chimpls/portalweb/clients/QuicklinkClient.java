@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.cgi.uswest.chimpls.portalweb.objects.Quicklink;
 
-@FeignClient(name = "quicklink", configuration = QuicklinkClientConfiguration.class)
+@FeignClient(name = "quicklinks", configuration = QuicklinkClientConfiguration.class)
 public interface QuicklinkClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/quicklinks/{county}", 
