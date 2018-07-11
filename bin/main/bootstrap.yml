@@ -6,23 +6,9 @@ spring:
   cloud:
     config:
       uri: ${vcap.services.cw-portal-config-server.credentials.uri:http://localhost:8888}
-
-  jpa:
-    hibernate:
-      ddl-auto: update
       
-security:
-  oauth2:
-    client:
-      clientId: ${CLIENT_ID:abcde}
-      clientSecret: ${CLIENT_SECRET:abcde}
-      accessTokenUri: https://www.googleapis.com/oauth2/v4/token
-      userAuthorizationUri: https://accounts.google.com/o/oauth2/v2/auth
-      tokenName: oauth_token
-      authenticationScheme: query
-      clientAuthenticationScheme: form
-      scope: profile email
-    resource:
-      userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo
-      
-
+  security:
+    user:
+      name: jhagen1908
+      password: timmy
+ 

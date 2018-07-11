@@ -1,17 +1,14 @@
----
+--- 
 applications: 
   - 
     buildpack: java_buildpack
     instances: 1
     memory: 750M
     name: portalweb
-    path: C:\Users\jerry.hagen\Documents\GitHub\portalweb\build\libs\portalweb-0.0.2-SNAPSHOT.jar
+    path: C:\Users\jerry.hagen\Documents\GitHub\portalweb\build\libs\portalweb-0.0.1-SNAPSHOT.jar
     services: 
       - cw-portal-config-server
       - cw-portal-service-registry
-      - portalweb-users-db
     timeout: 180
     env:
       APP_VERSION: blue
-      CLIENT_ID: 1017042697580-dsj5jlbu92j32oe1griro89m8d4agdgv
-      CLIENT_SECRET: fwAL9xoyMgfedykhFRzYka3N
