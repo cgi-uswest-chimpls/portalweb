@@ -26,14 +26,16 @@ public class User {
 	private String sub;
 	private String email;
 	private String idprvdorg;
+	private String county;
 	
 	User() {}
 
-	public User(String sub, String email, String idprvdorg) {
+	public User(String sub, String email, String idprvdorg, String county) {
 		super();
 		this.sub = sub;
 		this.email = email;
 		this.idprvdorg = idprvdorg;
+		this.county = county;
 	}
 
 	public String getSub() {
@@ -58,6 +60,14 @@ public class User {
 
 	public void setIdprvdorg(String idprvdorg) {
 		this.idprvdorg = idprvdorg;
+	}
+
+	public String getCounty() {
+		return county;
+	}
+
+	public void setCounty(String county) {
+		this.county = county;
 	}
 	
 }

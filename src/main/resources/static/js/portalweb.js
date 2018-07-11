@@ -42,7 +42,10 @@ function loadProvider() {
         contentType: "application/json",
         success: function (result) {
         	//$('#divProviderDetail').html(JSON.stringify(result));
+        	$('#userCounty').val(result.county);
+        	
         	idprvdorg = result.idprvdorg;
+        	
         	loadProviderDetails(idprvdorg);
         	loadProviderPlacements(idprvdorg);
         },
