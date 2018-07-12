@@ -2,6 +2,7 @@ package com.cgi.uswest.chimpls.portalweb.controller;
 
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ import com.cgi.uswest.chimpls.portalweb.clients.PersonClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PlacementsClient;
 import com.cgi.uswest.chimpls.portalweb.clients.ProviderDetailClient;
 import com.cgi.uswest.chimpls.portalweb.clients.QuicklinkClient;
+import com.cgi.uswest.chimpls.portalweb.clients.SacwisUpdateClient;
 
 @RefreshScope
 @RestController
@@ -54,6 +56,9 @@ public class PortalwebApplicationController {
 	
 	@Autowired
 	private QuicklinkClient quicklinkClient;
+	
+	@Autowired
+	private SacwisUpdateClient sacwisUpdateClient;
 	
 	  @RequestMapping("currentUser")
 	  public User user(Principal principal) {
@@ -115,8 +120,24 @@ public class PortalwebApplicationController {
 		  return addressClient.getPersonAddressData(idprsn);
 	  }
 	  
+	  @RequestMapping("providerAddress/{idprvd}")
+	   public Address findProviderAddress(@PathVariable("idprvd") BigDecimal idprvd) {
+		  return addressClient.getProviderAddressData(idprvd);
+	  }
+	  
 	  @RequestMapping("quicklinks/{county}")
 	   public List<Quicklink> findQuicklinksByCounty(@PathVariable("county") String county) {
 		  return quicklinkClient.getQuicklinksByCounty(county);
+	  }
+	  
+	  @RequestMapping("sacwisupdate/add")
+	   public String addSacwisUpdates(@PathVariable("id_grp") BigDecimal id_grp,
+			    @PathVariable("cd_grp") String	cd_grp,
+				@PathVariable("cd_type") BigDecimal cd_type, 
+				@PathVariable("cd_type") String tx_update,
+				@PathVariable("id_cr") BigDecimal id_cr,
+				@PathVariable("ts_cr") Timestamp ts_cr,
+				@PathVariable("cd_stat") String cd_stat) {
+		  return sacwisUpdateClient.addSacwisUpdates(id_grp,cd_grp,cd_type,tx_update,id_cr,ts_cr,cd_stat);
 	  }
 }
