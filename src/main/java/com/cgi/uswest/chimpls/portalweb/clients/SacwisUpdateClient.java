@@ -25,6 +25,5 @@ public interface SacwisUpdateClient {
 			@PathVariable("cd_type") BigDecimal cd_type, 
 			@PathVariable("cd_type") String tx_update,
 			@PathVariable("id_cr") BigDecimal id_cr,
-			@PathVariable("ts_cr") Timestamp ts_cr,
 			@PathVariable("cd_stat") String cd_stat);
 }

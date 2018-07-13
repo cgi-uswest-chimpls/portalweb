@@ -169,7 +169,7 @@ function saveSacwisUpdate(){
 			    +'&cd_stat=P';
 	alert(m_url);
 	$.ajax({
-        url: m_url
+        url: m_url,
         datatype: 'String',
         type: "POST",
         contentType: "application/json",

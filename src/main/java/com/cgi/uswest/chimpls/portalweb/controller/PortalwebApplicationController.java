@@ -136,8 +136,8 @@ public class PortalwebApplicationController {
 				@PathVariable("cd_type") BigDecimal cd_type, 
 				@PathVariable("cd_type") String tx_update,
 				@PathVariable("id_cr") BigDecimal id_cr,
-				@PathVariable("ts_cr") Timestamp ts_cr,
 				@PathVariable("cd_stat") String cd_stat) {
-		  return sacwisUpdateClient.addSacwisUpdates(id_grp,cd_grp,cd_type,tx_update,id_cr,ts_cr,cd_stat);
+		  System.out.println("*****CONTROLLER: id_grp:" + id_grp);
+		  return sacwisUpdateClient.addSacwisUpdates(id_grp,cd_grp,cd_type,tx_update,id_cr,cd_stat);
 	  }
 }
