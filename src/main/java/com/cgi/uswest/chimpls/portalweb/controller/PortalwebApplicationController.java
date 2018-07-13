@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cgi.uswest.chimpls.portalweb.objects.Address;
 import com.cgi.uswest.chimpls.portalweb.objects.Assignment;
 import com.cgi.uswest.chimpls.portalweb.objects.Episode;
+import com.cgi.uswest.chimpls.portalweb.objects.Payment;
 import com.cgi.uswest.chimpls.portalweb.objects.Person;
 import com.cgi.uswest.chimpls.portalweb.objects.ProviderDetail;
 import com.cgi.uswest.chimpls.portalweb.objects.Quicklink;
@@ -25,6 +26,7 @@ import com.cgi.uswest.chimpls.portalweb.objects.User;
 import com.cgi.uswest.chimpls.portalweb.repository.UserRepository;
 import com.cgi.uswest.chimpls.portalweb.clients.AddressClient;
 import com.cgi.uswest.chimpls.portalweb.clients.AssignmentClient;
+import com.cgi.uswest.chimpls.portalweb.clients.PaymentsClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PersonClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PlacementsClient;
 import com.cgi.uswest.chimpls.portalweb.clients.ProviderDetailClient;
@@ -54,6 +56,9 @@ public class PortalwebApplicationController {
 	
 	@Autowired
 	private QuicklinkClient quicklinkClient;
+	
+	@Autowired
+	private PaymentsClient paymentsClient;
 	
 	  @RequestMapping("currentUser")
 	  public User user(Principal principal) {
@@ -118,5 +123,15 @@ public class PortalwebApplicationController {
 	  @RequestMapping("quicklinks/{county}")
 	   public List<Quicklink> findQuicklinksByCounty(@PathVariable("county") String county) {
 		  return quicklinkClient.getQuicklinksByCounty(county);
+	  }
+	  
+	  @RequestMapping("paymentsByProvider/{idprvdorg}")
+	   public List<Payment> findPaymentsByProvider(@PathVariable("idprvdorg") String idprvdorg) {
+		  return paymentsClient.getPaymentsByProvider(idprvdorg);
+	  }
+	  
+	  @RequestMapping("paymentsByPerson/{idprsn}")
+	   public List<Payment> findPaymentsByPerson(@PathVariable("idprsn") String idprsn) {
+		  return paymentsClient.getPaymentsByPerson(idprsn);
 	  }
 }
