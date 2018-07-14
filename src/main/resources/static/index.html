@@ -11,6 +11,9 @@
 	    <link href="css/portalweb.css" type="text/css" rel="stylesheet"/>
 	    <link href="fontawesome-free-5.1.0-web/css/all.css" rel="stylesheet">
 
+		<!-- Latest compiled and minified Bootstrap Table CSS -->
+	   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+
 	    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	    <script src="jquery/jquery-3.3.1.min.js"></script>
 	    <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -19,6 +22,8 @@
 		<script src="js/portalweb.js"></script>
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
 		<script src="webjars/js-cookie/2.1.4/js.cookie.js"></script>
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
 	</head>
 	<body onload="loadProvider();">
 		<div class="unauthenticated">
@@ -26,6 +31,7 @@
 		</div>
 		<div class="authenticated">
 			<input type="hidden" id="userCounty" />
+			<input type="hidden" id="userIdPrvdOrg" />
 			<div class="navbar navbar-inverse cw-portal-navbar">
 				<div class="container-fluid">
 
@@ -42,9 +48,11 @@
 				      			
 				      		</div>
 				      	</div>
-				      	<div class="col-sm-2">
-				      	</div>
 				      	<div class="col-sm-1">
+				      	</div>
+				      	<div class="col-sm-2">
+				      		<span onclick="paymentsByProvider()"><span class="fa fa-2x fa-hand-holding-usd" style="color:white;"></span></span>
+				      		&nbsp;
 				      		<span onclick="help()"><span class="fa fa-2x fa-question" style="color:white;"></span></span>
 				      		&nbsp;
 				      		<span onclick="logout()"><span class="fa fa-2x fa-sign-out-alt" style="color:white;"></span></span>
@@ -90,6 +98,46 @@
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
+
+		<div id="paymentsByProviderModal" class="modal fade" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title">Payments</h4>
+		      </div>
+		      <div class="modal-body">
+		        <div id="divPaymentsByProvider">
+		        	<table id="paymentsByProviderTable">
+		        	</table>
+		        </div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+		<div id="paymentsByChildModal" class="modal fade" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title"><div id="paymentsByChildTitle"></div></h4>
+		      </div>
+		      <div class="modal-body">
+		        <div id="divPaymentsByChild">
+		        	<table id="paymentsByChildTable">
+		        	</table>
+		        </div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 		
 		<script id="placementsTemplate" type="text/x-handlebars-template">
 			{{#each this}}
@@ -119,7 +167,7 @@
 							<div class="col-sm-2">
 
 							</div>
-							<div class="col-sm-10">
+							<div class="col-sm-10 form-inline">
 								<div id="divChildName{{idprsn}}" class="child-name">
 								</div>
 							</div>
@@ -208,6 +256,7 @@
 				{{/each}}
 			</div>
 		</script>
+	
 		
 	</body>
 </html>

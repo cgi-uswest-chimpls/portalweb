@@ -44,6 +44,7 @@ function loadProvider() {
         contentType: "application/json",
         success: function (result) {
         	$('#userCounty').val(result.county);
+        	$('#userIdPrvdOrg').val(result.idprvdorg);
         	
         	idprvdorg = result.idprvdorg;
         	
@@ -81,6 +82,81 @@ function help() {
     });
 }
 
+function paymentsByChild(idprsn) {
+
+	   $.ajax({
+	        url: 'paymentsByPerson/' + idprsn ,
+	    	datatype: 'json',
+	        type: "get",
+	        contentType: "application/json",
+	        success: function (result) {
+	        	
+	        	$('#paymentsByChildTitle').html('Payments for ' + result[0].txpersonname);
+	        	
+	        	$('#paymentsByChildTable').bootstrapTable({
+	        		data: result,
+	        		classes: 'table table-hover table-striped',
+	        		columns: [{
+	        			field: 'dtpayment',
+	        			title: 'Payment Date',
+	        			formatter: formatDateSlashes,
+	        			sortable: true
+	        		}, {
+	        			field: 'amount',
+	        			title: 'Amount',
+	        			formatter: formatDollars,
+	        			sortable: true
+	        		}]
+	        	});
+	        	
+	        	$('#paymentsByChildModal').modal('show');
+	        },
+	        error: function () {
+	        	$('#divPaymentsByChildTable').html("<div style='color:white;'>An error occurred trying to access the endpoint paymentsByPerson/" + idprsn);
+	        }
+	    });
+}
+
+function paymentsByProvider() {
+
+   var userIdPrvdOrg = $('#userIdPrvdOrg').val();
+	
+   $.ajax({
+        url: 'paymentsByProvider/' + userIdPrvdOrg ,
+    	datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	
+        	$('#paymentsByProviderTable').bootstrapTable({
+        		data: result,
+        		classes: 'table table-hover table-striped',
+        		columns: [{
+        			field: 'dtpayment',
+        			title: 'Payment Date',
+        			formatter: formatDateSlashes,
+        			sortable: true
+        		}, {
+        			field: 'amount',
+        			title: 'Amount',
+        			formatter: formatDollars,
+        			sortable: true
+        		}, {
+        			field: 'txpersonname',
+        			title: 'Child Name',
+        			sortable: true
+        		}]
+        	});
+        	
+        	$('#paymentsByProviderModal').modal('show');
+        },
+        error: function () {
+        	$('#divPaymentsByProviderTable').html("<div style='color:white;'>An error occurred trying to access the endpoint paymentsByProvider/" + userIdPrvdOrg);
+        }
+    });
+	
+}
+
 function registerHandlebarsHelpers() {
 	
 	Handlebars.registerHelper('formatDateSlashes', function(text, url) {
@@ -94,6 +170,18 @@ function registerHandlebarsHelpers() {
 		  return new Handlebars.SafeString(month + "/" + day + "/" + year);
 	});
 	
+}
+
+function formatDateSlashes(value, row, index, field) {
+	  var year = value.substring(0,4);
+	  var month = parseInt(value.substring(5,7));
+	  var day = parseInt(value.substring(8,10));
+
+	  return month + "/" + day + "/" + year;
+}
+
+function formatDollars(value, row, index, field) {
+	return '$' + Number(Math.round(parseFloat(value)+'e2')+'e-2').toFixed(2);
 }
 
 function loadProviderDetails(idprvdorg) {
@@ -180,7 +268,7 @@ function loadChildInPlacementData(idprsn) {
         contentType: "application/json",
         success: function (result) {
         	
-        	$('#divChildName'+idprsn).html(result.nmfrst + ' ' + result.nmlst);
+        	$('#divChildName'+idprsn).html(result.nmfrst + ' ' + result.nmlst + spanChildPaymentIcon(idprsn));
         	$('#divChildPlan'+idprsn).html(result.nmfrst + "'s Plan");   
         	$('#divChildAge'+idprsn).html('Age: ' + result.qtage);
         	$('#divChildImage'+idprsn).html('<img src="'+result.tximagelink+'" class="img-circle cw-portal-navbar-image" ></img>');
@@ -190,6 +278,12 @@ function loadChildInPlacementData(idprsn) {
         }
     });	
 	
+}
+
+function spanChildPaymentIcon(idprsn) {
+	return "&nbsp;&nbsp;" +
+	'<span id="spanChildPayments' + idprsn + '" onclick="paymentsByChild(' + idprsn + ');">' +
+	'<span class="fa fa-hand-holding-usd"></span></span>';
 }
 
 function loadPrimaryCaseWorker(idprsn, idcase) {
