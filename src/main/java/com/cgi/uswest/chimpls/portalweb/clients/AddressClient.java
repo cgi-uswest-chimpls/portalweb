@@ -24,7 +24,7 @@ public interface AddressClient {
     
 	@RequestMapping(method = RequestMethod.GET, value = "/address/providerAddress/{idprvd}", 
     		consumes = "application/json")
-	Address getproviderAddressData(@PathVariable("idprvd") BigDecimal idprvd);
+	Address getProviderAddressData(@PathVariable("idprvd") BigDecimal idprvd);
 
     
 }

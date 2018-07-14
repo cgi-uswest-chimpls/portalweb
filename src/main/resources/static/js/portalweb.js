@@ -202,9 +202,70 @@ function loadProviderDetails(idprvdorg) {
         			+ result.tximagelink + '" />');
         	
         	loadPrimaryProviderWorker(idprvdorg);
+        	loadProviderAddress(idprvdorg);
         },
         error: function () {
         	$('#divProviderDetail').html("<div style='color:white;'>An error occurred trying to access the endpoint " + 'providerdetail/' + idprvdorg + "</div>");
+        }
+    });
+	
+}
+
+function loadProviderAddress(idprvd) {
+
+    $.ajax({
+        url: 'providerAddress/' + idprvd,
+        datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	
+        	$('#divProviderAddress').html('Address: '+result.tx_adress 
+        			+ '&nbsp;&nbsp;&nbsp;&nbsp;<a class="provider-license" href="#" onclick="editPrvdAddress('+idprvd+');">Edit</a>');
+        },
+        error: function () {
+        	$('#divProviderAddress').html("An error occurred trying to access the endpoint " + 'address/providerAddress/' + idprvd);
+        }
+    });	
+	
+}
+
+function editPrvdAddress(p_idPrvd){
+	//alert('PrvdId: ' + p_idPrvd);
+	document.getElementById('id_grp').value = p_idPrvd;
+	$('#sacwisUpdateModal').modal('show');
+}
+
+function enblDsblTxt(){
+	if (document.getElementById('updateType').value==""){
+		document.getElementById('txUpdt').disabled = true;
+		document.getElementById('txUpdt').value = '';
+		document.getElementById('btnUpdtSave').disabled = true;
+	} else {
+		document.getElementById('txUpdt').disabled = false;
+		document.getElementById('btnUpdtSave').disabled = false;
+	}
+}
+
+function saveSacwisUpdate(){
+	//alert(document.getElementById('id_grp').value);
+	var m_url = 'sacwisupdate/add?id_grp=' + document.getElementById('id_grp').value 
+			    +'&cd_grp=F'
+			    +'&cd_type=' + document.getElementById('updateType').value 
+			    +'&tx_update=' + document.getElementById('txUpdt').value 
+			    +'&id_cr='+document.getElementById('id_grp').value 
+			    +'&cd_stat=P';
+	alert(m_url);
+	$.ajax({
+        url: m_url,
+        datatype: 'String',
+        type: "POST",
+        contentType: "application/json",
+        success: function (result) {
+        	alert('saved');
+        },
+        error: function () {
+        	alert('error');
         }
     });
 	
