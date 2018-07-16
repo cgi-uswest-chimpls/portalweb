@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cgi.uswest.chimpls.portalweb.objects.Address;
@@ -146,12 +147,12 @@ public class PortalwebApplicationController {
 	  }
 
 	  @RequestMapping("sacwisupdate/add")
-	   public String addSacwisUpdates(@PathVariable("id_grp") BigDecimal id_grp,
-			    @PathVariable("cd_grp") String	cd_grp,
-				@PathVariable("cd_type") BigDecimal cd_type, 
-				@PathVariable("cd_type") String tx_update,
-				@PathVariable("id_cr") BigDecimal id_cr,
-				@PathVariable("cd_stat") String cd_stat) {
+	   public String addSacwisUpdates(@RequestParam(value="id_grp") String id_grp,
+			    @RequestParam(value="cd_grp") String	cd_grp,
+				@RequestParam(value="cd_type") String cd_type, 
+				@RequestParam(value="tx_update") String tx_update,
+				@RequestParam(value="id_cr") String id_cr,
+				@RequestParam(value="cd_stat") String cd_stat) {
 		  System.out.println("*****CONTROLLER: id_grp:" + id_grp);
 		  return sacwisUpdateClient.addSacwisUpdates(id_grp,cd_grp,cd_type,tx_update,id_cr,cd_stat);
 

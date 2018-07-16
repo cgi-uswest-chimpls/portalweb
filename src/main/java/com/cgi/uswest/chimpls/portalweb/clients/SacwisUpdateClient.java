@@ -8,6 +8,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cgi.uswest.chimpls.portalweb.objects.SacwisUpdate;
 
@@ -20,10 +21,10 @@ public interface SacwisUpdateClient {
 	@RequestMapping(method = RequestMethod.POST, value = "/sacwisupdate/add", 
     		consumes = "application/json")
 	String addSacwisUpdates(
-			@PathVariable("id_grp") BigDecimal id_grp,
-		    @PathVariable("cd_grp") String	cd_grp,
-			@PathVariable("cd_type") BigDecimal cd_type, 
-			@PathVariable("cd_type") String tx_update,
-			@PathVariable("id_cr") BigDecimal id_cr,
-			@PathVariable("cd_stat") String cd_stat);
+			@RequestParam(value="id_grp") String id_grp,
+		    @RequestParam(value="cd_grp") String	cd_grp,
+			@RequestParam(value="cd_type") String cd_type, 
+			@RequestParam(value="tx_update") String tx_update,
+			@RequestParam(value="id_cr") String id_cr,
+			@RequestParam(value="cd_stat") String cd_stat);
 }

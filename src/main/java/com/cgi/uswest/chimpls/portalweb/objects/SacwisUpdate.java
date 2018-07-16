@@ -6,22 +6,22 @@ import java.sql.Timestamp;
 public class SacwisUpdate {
 private BigDecimal id_sacwis_update;
 	
-    private BigDecimal id_grp;
+    private String id_grp;
     private String	cd_grp; //C for case, P for person, F for Foster care
-	private BigDecimal cd_type; //1 for address, 2 for phone etc
+	private String cd_type; //1 for address, 2 for phone etc
 	private String tx_update;
-	private BigDecimal id_cr;
+	private String id_cr;
 	private Timestamp ts_cr;
 	private String cd_stat;
 	
 	SacwisUpdate() {}
 	
 	public SacwisUpdate(
-			BigDecimal id_grp,
+			String id_grp,
 		    String	cd_grp,
-			BigDecimal cd_type,
+			String cd_type,
 			String tx_update,
-			BigDecimal id_cr,
+			String id_cr,
 			Timestamp ts_cr,
 			String cd_stat
 			) {
@@ -43,11 +43,11 @@ private BigDecimal id_sacwis_update;
 		this.id_sacwis_update = id_sacwis_update;
 	}
 
-	public BigDecimal getId_grp() {
+	public String getId_grp() {
 		return id_grp;
 	}
 
-	public void setId_grp(BigDecimal id_grp) {
+	public void setId_grp(String id_grp) {
 		this.id_grp = id_grp;
 	}
 
@@ -59,11 +59,11 @@ private BigDecimal id_sacwis_update;
 		this.cd_grp = cd_grp;
 	}
 
-	public BigDecimal getCd_type() {
+	public String getCd_type() {
 		return cd_type;
 	}
 
-	public void setCd_type(BigDecimal cd_type) {
+	public void setCd_type(String cd_type) {
 		this.cd_type = cd_type;
 	}
 
@@ -75,11 +75,11 @@ private BigDecimal id_sacwis_update;
 		this.tx_update = tx_update;
 	}
 
-	public BigDecimal getId_cr() {
+	public String getId_cr() {
 		return id_cr;
 	}
 
-	public void setId_cr(BigDecimal id_cr) {
+	public void setId_cr(String id_cr) {
 		this.id_cr = id_cr;
 	}
 
