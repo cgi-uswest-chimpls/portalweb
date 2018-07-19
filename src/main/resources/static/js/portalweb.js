@@ -233,6 +233,10 @@ function loadProviderAddress(idprvd) {
 function editPrvdAddress(p_idPrvd){
 	//alert('PrvdId: ' + p_idPrvd);
 	document.getElementById('id_grp').value = p_idPrvd;
+	document.getElementById('dataContainer').style.display = 'inline';
+	document.getElementById('dataSavedContainer').style.display = 'none';
+	document.getElementById('updateType').value = "";
+	document.getElementById('txUpdt').value = "";
 	$('#sacwisUpdateModal').modal('show');
 }
 
@@ -255,14 +259,16 @@ function saveSacwisUpdate(){
 			    +'&tx_update=' + document.getElementById('txUpdt').value 
 			    +'&id_cr='+document.getElementById('id_grp').value 
 			    +'&cd_stat=P';
-	alert(m_url);
+	
 	$.ajax({
         url: m_url,
         datatype: 'String',
         type: "POST",
         contentType: "application/json",
         success: function (result) {
-        	alert('saved');
+//        	alert('saved');
+        	document.getElementById('dataContainer').style.display = 'none';
+        	document.getElementById('dataSavedContainer').style.display = 'inline';
         },
         error: function () {
         	alert('error');
