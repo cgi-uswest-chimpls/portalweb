@@ -1,6 +1,7 @@
 var handlebars_placementsTemplate;
 var handlebars_providerDetailsTemplate;
 var handlebars_quicklinksTemplate;
+var handlebars_messagesTemplate;
 
 $.ajaxSetup({
 	beforeSend : function(xhr, settings) {
@@ -32,6 +33,7 @@ function loadProvider() {
 	handlebars_placementsTemplate = Handlebars.compile($('#placementsTemplate').html());
 	handlebars_providerDetailsTemplate = Handlebars.compile($('#providerDetailsTemplate').html());
 	handlebars_quicklinksTemplate = Handlebars.compile($('#quicklinksTemplate').html());
+	handlebars_messagesTemplate = Handlebars.compile($('#messagesTemplate').html());
 	
 	registerHandlebarsHelpers();
 	
@@ -48,6 +50,7 @@ function loadProvider() {
         	
         	idprvdorg = result.idprvdorg;
         	
+        	loadMessagesToUser(idprvdorg);
         	loadProviderDetails(idprvdorg);
         	loadProviderPlacements(idprvdorg);
         },
@@ -182,6 +185,39 @@ function formatDateSlashes(value, row, index, field) {
 
 function formatDollars(value, row, index, field) {
 	return '$' + Number(Math.round(parseFloat(value)+'e2')+'e-2').toFixed(2);
+}
+
+function loadMessagesToUser(idprvdorg) {
+	
+    $.ajax({
+        url: 'messages/tome/' + idprvdorg,
+    	datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	
+        	var data = JSON.stringify(result);
+        	//$('#divProviderDetail').html(data);
+        	
+        	$('#divMessages').html(handlebars_messagesTemplate(result));
+
+        },
+        error: function () {
+        	$('#divMessages').html("<div style='color:white;'>An error occurred trying to access the endpoint " + 'messages/tome/' + idprvdorg + "</div>");
+        }
+    });
+	
+}
+
+function toggleMessageBody(index) {
+	if ($('#messageIcon'+index).hasClass('fa-plus-circle')) {
+		$('#messageIcon'+index).removeClass('fa-plus-circle').addClass('fa-minus-circle');
+		$('#messageBody'+index).show();
+	}
+	else {
+		$('#messageIcon'+index).removeClass('fa-minus-circle').addClass('fa-plus-circle');
+		$('#messageBody'+index).hide();
+	}
 }
 
 function loadProviderDetails(idprvdorg) {
@@ -330,7 +366,7 @@ function loadChildInPlacementData(idprsn) {
         success: function (result) {
         	
         	$('#divChildName'+idprsn).html(result.nmfrst + ' ' + result.nmlst + spanChildPaymentIcon(idprsn));
-        	$('#divChildPlan'+idprsn).html(result.nmfrst + "'s Plan");   
+        	$('#divChildPlan'+idprsn).html(result.nmfrst);   
         	$('#divChildAge'+idprsn).html('Age: ' + result.qtage);
         	$('#divChildImage'+idprsn).html('<img src="'+result.tximagelink+'" class="img-circle cw-portal-navbar-image" ></img>');
         },

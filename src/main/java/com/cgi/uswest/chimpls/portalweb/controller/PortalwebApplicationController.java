@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cgi.uswest.chimpls.portalweb.objects.Address;
 import com.cgi.uswest.chimpls.portalweb.objects.Assignment;
 import com.cgi.uswest.chimpls.portalweb.objects.Episode;
+import com.cgi.uswest.chimpls.portalweb.objects.Message;
 import com.cgi.uswest.chimpls.portalweb.objects.Payment;
 import com.cgi.uswest.chimpls.portalweb.objects.Person;
 import com.cgi.uswest.chimpls.portalweb.objects.ProviderDetail;
@@ -28,6 +29,7 @@ import com.cgi.uswest.chimpls.portalweb.objects.User;
 import com.cgi.uswest.chimpls.portalweb.repository.UserRepository;
 import com.cgi.uswest.chimpls.portalweb.clients.AddressClient;
 import com.cgi.uswest.chimpls.portalweb.clients.AssignmentClient;
+import com.cgi.uswest.chimpls.portalweb.clients.MessagesClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PaymentsClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PersonClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PlacementsClient;
@@ -65,6 +67,9 @@ public class PortalwebApplicationController {
 
 	@Autowired
 	private SacwisUpdateClient sacwisUpdateClient;
+	
+	@Autowired
+	private MessagesClient messagesClient;
 	
 	  @RequestMapping("currentUser")
 	  public User user(Principal principal) {
@@ -157,4 +162,15 @@ public class PortalwebApplicationController {
 		  return sacwisUpdateClient.addSacwisUpdates(id_grp,cd_grp,cd_type,tx_update,id_cr,cd_stat);
 
 	  }
+	  
+	  @RequestMapping("messages/tome/{idprvdorg}")
+	  public List<Message> findMessagesToMe(@PathVariable("idprvdorg") String idprvdorg) {
+		  return messagesClient.getMessagesToMe(new BigDecimal(idprvdorg));
+	  }
+	  
+	  @RequestMapping("messages/fromme/{idprvdorg}")
+	  public List<Message> findMessagesFromMe(@PathVariable("idprvdorg") String idprvdorg) {
+		  return messagesClient.getMessagesFromMe(new BigDecimal(idprvdorg));
+	  }
+	  
 }

@@ -55,3 +55,22 @@
 	font-size: 18px;
 	font-weight: bold;
 }
+
+.message-body {
+	font-size: 10px;
+}
+
+.message-read {
+	font-size: 12px;
+}
+
+.message-unread {
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.messages-header {
+	padding-top: 5px;
+	font-size: 18px;
+	font-weight: bold;
+}
