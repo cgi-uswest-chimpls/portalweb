@@ -11,11 +11,14 @@ public class Message {
 	private String content;
 	private String attachment;
 	private String deletedDate;
+	private String fromUserName;
+	private String toUserName;
 	
 	Message() {}
 	
 	public Message(String id, String fromId, String fromUserType, String toId, String toUserType,
-			String title, String content, String attachment, String deletedDate) {
+			String title, String content, String attachment, String deletedDate, String fromUserName,
+			String toUserName) {
 		super();
 		this.id = id;
 		this.fromId = fromId;
@@ -26,6 +29,8 @@ public class Message {
 		this.content = content;
 		this.attachment = attachment;
 		this.deletedDate = deletedDate;
+		this.fromUserName = fromUserName;
+		this.toUserName = toUserName;
 	}
 
 	public String getId() {
@@ -98,6 +103,22 @@ public class Message {
 
 	public void setDeletedDate(String deletedDate) {
 		this.deletedDate = deletedDate;
+	}
+
+	public String getFromUserName() {
+		return fromUserName;
+	}
+
+	public void setFromUserName(String fromUserName) {
+		this.fromUserName = fromUserName;
+	}
+
+	public String getToUserName() {
+		return toUserName;
+	}
+
+	public void setToUserName(String toUserName) {
+		this.toUserName = toUserName;
 	}
 	
 }

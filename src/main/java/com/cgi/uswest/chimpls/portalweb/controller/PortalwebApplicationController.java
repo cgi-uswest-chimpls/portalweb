@@ -165,12 +165,24 @@ public class PortalwebApplicationController {
 	  
 	  @RequestMapping("messages/tome/{idprvdorg}")
 	  public List<Message> findMessagesToMe(@PathVariable("idprvdorg") String idprvdorg) {
-		  return messagesClient.getMessagesToMe(new BigDecimal(idprvdorg));
+		  List<Message> messages = messagesClient.getMessagesToMe(new BigDecimal(idprvdorg));
+		  for (int i = 0; i < messages.size(); i++) {
+			  Message message = messages.get(i);
+			  Person person = personClient.getPersonDataByIdprsn(message.getFromId());
+			  message.setFromUserName(person.getNmlst() + ", " + person.getNmfrst());
+		  }
+		  return messages;
 	  }
 	  
 	  @RequestMapping("messages/fromme/{idprvdorg}")
 	  public List<Message> findMessagesFromMe(@PathVariable("idprvdorg") String idprvdorg) {
-		  return messagesClient.getMessagesFromMe(new BigDecimal(idprvdorg));
+		  List<Message> messages = messagesClient.getMessagesFromMe(new BigDecimal(idprvdorg));
+		  for (int i = 0; i < messages.size(); i++) {
+			  Message message = messages.get(i);
+			  Person person = personClient.getPersonDataByIdprsn(message.getToId());
+			  message.setToUserName(person.getNmlst() + ", " + person.getNmfrst());
+		  }
+		  return messages;
 	  }
 	  
 }
