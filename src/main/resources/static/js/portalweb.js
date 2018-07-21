@@ -2,6 +2,7 @@ var handlebars_placementsTemplate;
 var handlebars_providerDetailsTemplate;
 var handlebars_quicklinksTemplate;
 var handlebars_messagesTemplate;
+var handlebars_sentMessagesTemplate;
 
 $.ajaxSetup({
 	beforeSend : function(xhr, settings) {
@@ -34,6 +35,7 @@ function loadProvider() {
 	handlebars_providerDetailsTemplate = Handlebars.compile($('#providerDetailsTemplate').html());
 	handlebars_quicklinksTemplate = Handlebars.compile($('#quicklinksTemplate').html());
 	handlebars_messagesTemplate = Handlebars.compile($('#messagesTemplate').html());
+	handlebars_sentMessagesTemplate = Handlebars.compile($('#sentMessagesTemplate').html());
 	
 	registerHandlebarsHelpers();
 	
@@ -173,6 +175,27 @@ function registerHandlebarsHelpers() {
 		  return new Handlebars.SafeString(month + "/" + day + "/" + year);
 	});
 	
+	Handlebars.registerHelper('formatDateSlashesWithTimestamp', function(text, url) {
+	
+		  var year = text.substring(0,4);
+		  var month = parseInt(text.substring(5,7));
+		  var day = parseInt(text.substring(8,10));
+
+		  var hour = parseInt(text.substring(11,13));
+		  var minute = parseInt(text.substring(14,16));
+		  
+		  var ampm = "AM";
+		  if (hour > 12) {
+			  hour = hour - 12;
+			  ampm = "PM";
+		  }
+		  
+		  return new Handlebars.SafeString(month + "/" + day + "/" + year + 
+				  " " + hour + ":" + minute + " " + ampm);
+		
+	});
+	
+	
 }
 
 function formatDateSlashes(value, row, index, field) {
@@ -181,6 +204,23 @@ function formatDateSlashes(value, row, index, field) {
 	  var day = parseInt(value.substring(8,10));
 
 	  return month + "/" + day + "/" + year;
+}
+
+function formatDateSlashesWithTimestamp(value, row, index, field) {
+	  var year = value.substring(0,4);
+	  var month = parseInt(value.substring(5,7));
+	  var day = parseInt(value.substring(8,10));
+
+	  var hour = parseInt(value.substring(11,13));
+	  var minute = parseInt(value.substring(14,16));
+	  
+	  var ampm = "AM";
+	  if (hour > 12) {
+		  hour = hour - 12;
+		  ampm = "PM";
+	  }
+	  
+	  return month + "/" + day + "/" + year + " " + hour + ":" + minute + " " + ampm;
 }
 
 function formatDollars(value, row, index, field) {
@@ -200,23 +240,67 @@ function loadMessagesToUser(idprvdorg) {
         	//$('#divProviderDetail').html(data);
         	
         	$('#divMessages').html(handlebars_messagesTemplate(result));
+        	loadMessagesFromUser(idprvdorg);
 
         },
         error: function () {
-        	$('#divMessages').html("<div style='color:white;'>An error occurred trying to access the endpoint " + 'messages/tome/' + idprvdorg + "</div>");
+        	$('#divMessages').html("<div>An error occurred trying to access the endpoint " + 'messages/tome/' + idprvdorg + "</div>");
         }
     });
 	
 }
 
+function loadMessagesFromUser(idprvdorg) {
+	
+    $.ajax({
+        url: 'messages/fromme/' + idprvdorg,
+    	datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	
+        	var data = JSON.stringify(result);
+        	//$('#divProviderDetail').html(data);
+        	$('#sentMessagesHeader').html("Sent (" + result.length + ")");
+        	$('#sentMessages').html(handlebars_sentMessagesTemplate(result));
+
+        },
+        error: function () {
+        	$('#sentMessages').html("<div>An error occurred trying to access the endpoint " + 'messages/fromme/' + idprvdorg + "</div>");
+        }
+    });
+	
+}
+
+function showMessages() {
+	$('#messages').show();
+	$('#sentMessages').hide();
+}
+
+function showSentMessages() {
+	$('#sentMessages').show();
+	$('#messages').hide();
+}
+
 function toggleMessageBody(index) {
-	if ($('#messageIcon'+index).hasClass('fa-plus-circle')) {
-		$('#messageIcon'+index).removeClass('fa-plus-circle').addClass('fa-minus-circle');
+	if ($('#messageIcon'+index).hasClass('fa-envelope')) {
+		$('#messageIcon'+index).removeClass('fa-envelope').addClass('fa-envelope-open');
 		$('#messageBody'+index).show();
 	}
 	else {
-		$('#messageIcon'+index).removeClass('fa-minus-circle').addClass('fa-plus-circle');
+		$('#messageIcon'+index).removeClass('fa-envelope-open').addClass('fa-envelope');
 		$('#messageBody'+index).hide();
+	}
+}
+
+function toggleSentMessageBody(index) {
+	if ($('#sentMessageIcon'+index).hasClass('fa-envelope')) {
+		$('#sentMessageIcon'+index).removeClass('fa-envelope').addClass('fa-envelope-open');
+		$('#sentMessageBody'+index).show();
+	}
+	else {
+		$('#sentMessageIcon'+index).removeClass('fa-envelope-open').addClass('fa-envelope');
+		$('#sentMessageBody'+index).hide();
 	}
 }
 

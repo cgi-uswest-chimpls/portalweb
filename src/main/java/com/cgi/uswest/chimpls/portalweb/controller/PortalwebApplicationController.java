@@ -3,9 +3,19 @@ package com.cgi.uswest.chimpls.portalweb.controller;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -167,10 +177,18 @@ public class PortalwebApplicationController {
 	  public List<Message> findMessagesToMe(@PathVariable("idprvdorg") String idprvdorg) {
 		  List<Message> messages = messagesClient.getMessagesToMe(new BigDecimal(idprvdorg));
 		  for (int i = 0; i < messages.size(); i++) {
+			  
+			  // get person name from person service
+			  
 			  Message message = messages.get(i);
 			  Person person = personClient.getPersonDataByIdprsn(message.getFromId());
 			  message.setFromUserName(person.getNmlst() + ", " + person.getNmfrst());
+			  
+			  message.setCreatedDate(convertUTCToCentral(message.getCreatedDate()));
+
+			  
 		  }
+		  //Collections.sort(messages, Collections.reverseOrder());
 		  return messages;
 	  }
 	  
@@ -181,8 +199,34 @@ public class PortalwebApplicationController {
 			  Message message = messages.get(i);
 			  Person person = personClient.getPersonDataByIdprsn(message.getToId());
 			  message.setToUserName(person.getNmlst() + ", " + person.getNmfrst());
+
+			message.setCreatedDate(convertUTCToCentral(message.getCreatedDate()));
+
+			  
 		  }
+		  
+		  //Collections.sort(messages, Collections.reverseOrder());
 		  return messages;
+	  }
+	  
+	  public String convertUTCToCentral(String utcDate) {
+		  
+		  String utcFormat = "yyyy-MM-dd'T'HH:mm:ss";
+		  
+		  LocalDateTime ldt = LocalDateTime.parse(utcDate, DateTimeFormatter.ofPattern(utcFormat));
+		  
+		  ZoneId utcZoneId = ZoneId.of("UTC");
+		  
+		  ZonedDateTime UTCDateTime = ldt.atZone(utcZoneId);
+		  
+		  ZoneId centralZoneId = ZoneId.of("America/Chicago");
+		  
+		  ZonedDateTime centralZonedDateTime = UTCDateTime.withZoneSameInstant(centralZoneId);
+		  
+		  DateTimeFormatter format = DateTimeFormatter.ofPattern(utcFormat);
+		  
+		  return format.format(centralZonedDateTime);
+		  
 	  }
 	  
 }

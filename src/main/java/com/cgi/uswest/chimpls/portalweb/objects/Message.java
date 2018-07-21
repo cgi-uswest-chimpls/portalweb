@@ -10,6 +10,7 @@ public class Message {
 	private String title;
 	private String content;
 	private String attachment;
+	private String createdDate;
 	private String deletedDate;
 	private String fromUserName;
 	private String toUserName;
@@ -17,7 +18,8 @@ public class Message {
 	Message() {}
 	
 	public Message(String id, String fromId, String fromUserType, String toId, String toUserType,
-			String title, String content, String attachment, String deletedDate, String fromUserName,
+			String title, String content, String attachment, String createdDate,
+			String deletedDate, String fromUserName,
 			String toUserName) {
 		super();
 		this.id = id;
@@ -28,6 +30,7 @@ public class Message {
 		this.title = title;
 		this.content = content;
 		this.attachment = attachment;
+		this.createdDate = createdDate;
 		this.deletedDate = deletedDate;
 		this.fromUserName = fromUserName;
 		this.toUserName = toUserName;
@@ -119,6 +122,14 @@ public class Message {
 
 	public void setToUserName(String toUserName) {
 		this.toUserName = toUserName;
+	}
+
+	public String getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
 	}
 	
 }

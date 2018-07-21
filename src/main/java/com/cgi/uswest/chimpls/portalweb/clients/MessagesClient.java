@@ -17,7 +17,7 @@ public interface MessagesClient {
     		consumes = "application/json")
 	List<Message> getMessagesToMe(@PathVariable("idprvdorg") BigDecimal idprvdorg);
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/fromuser/0/{idprvdorg}", 
+	@RequestMapping(method = RequestMethod.GET, value = "/fromuser/1/{idprvdorg}", 
     		consumes = "application/json")
 	List<Message> getMessagesFromMe(@PathVariable("idprvdorg") BigDecimal idprvdorg);
 	

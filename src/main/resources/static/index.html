@@ -166,25 +166,34 @@
 		<script id="messagesTemplate" type="text/x-handlebars-template">
 			<div class="messages-header">	
 				<div class="row">
-					<div class="col-sm-12">
-						Messages ({{this.length}})
+					<div class="col-sm-2">
+						<span id="messagesHeader" onclick="showMessages();">
+							Messages ({{this.length}})
+						</span>
+					</div>
+					<div class="col-sm-2">
+						<span id="sentMessagesHeader" onclick="showSentMessages();">
+						</span>
 					</div>
 				</div>
 			</div>
+			<div id="messages">
 			{{#each this}}
 				<div id="messageHeader{{@index}}" class="message-read">
 					<div class="row">
 						<div class="col-sm-1 col-sm-offset-1 form-inline">
 							<span onclick="toggleMessageBody({{@index}});">
-								<span id="messageIcon{{@index}}" class="fa fa-plus-circle"></span>
+								<span id="messageIcon{{@index}}" class="fa fa-envelope"></span>
 							</span>
-							<span class="fa fa-envelope"></span>
 						</div>
 						<div class="col-sm-2">
 							{{fromUserName}}
 						</div>
-						<div class="col-sm-6">
+						<div class="col-sm-3">
 							{{title}}
+						</div>
+						<div class="col-sm-3">
+							{{formatDateSlashesWithTimestamp createdDate}}
 						</div>
 					</div>
 				</div>
@@ -195,8 +204,41 @@
 						</div>
 					</div>
 				</div>
-				</div>
 			{{/each}}
+			</div>
+			<div id="sentMessages" style="display:none;">
+			</div>
+		</script>
+		
+		<script id="sentMessagesTemplate" type="text/x-handlebars-template">
+			{{#each this}}
+				<div id="sentMessageHeader{{@index}}" class="message-read">
+					<div class="row">
+						<div class="col-sm-1 col-sm-offset-1 form-inline">
+							<span onclick="toggleSentMessageBody({{@index}});">
+								<span id="sentMessageIcon{{@index}}" class="fa fa-envelope"></span>
+							</span>
+						</div>
+						<div class="col-sm-2">
+							{{toUserName}}
+						</div>
+						<div class="col-sm-3">
+							{{title}}
+						</div>
+						<div class="col-sm-3">
+							{{formatDateSlashesWithTimestamp createdDate}}
+						</div>
+					</div>
+				</div>
+				<div id="sentMessageBody{{@index}}" style="display: none;" class="message-body">
+					<div class="row">
+						<div class="col-sm-10 col-sm-offset-2">
+							{{content}}
+						</div>
+					</div>
+				</div>
+				
+			{{/each}}			
 		</script>
 		
 		<script id="placementsTemplate" type="text/x-handlebars-template">
