@@ -304,6 +304,35 @@ function toggleSentMessageBody(index) {
 	}
 }
 
+function createMessage(idprvdorg) {
+	   var userIdPrvdOrg = $('#userIdPrvdOrg').val();
+		
+	   // TODO FIX THIS SO THAT PEOPLE SHOW UP!!!!!!!
+	   
+	   $.ajax({
+	        url: 'messages/dropdown/' + userIdPrvdOrg ,
+	    	datatype: 'json',
+	        type: "get",
+	        contentType: "application/json",
+	        success: function (result) {
+
+	        	var select = $('<select>').attr('id', 'selectMessageRecipient');
+
+	        	for (var i = 0; i < result.length; i++) {
+	        		var option = $('<option>').val(result.idPrsn).html(result.name);
+	        		select.append(option);
+	        	}
+	        	
+	        	$('#divMessagesDropdown').html("").append(select);
+	        	
+	        	$('#createMessageModal').modal('show');
+	        },
+	        error: function () {
+	        	$('#divMessagesDropdown').html("An error occurred trying to access the endpoint messages/dropdown/" + userIdPrvdOrg);
+	        }
+	    });
+}
+
 function loadProviderDetails(idprvdorg) {
 	
     $.ajax({

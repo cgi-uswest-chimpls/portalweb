@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -31,6 +32,7 @@ import com.cgi.uswest.chimpls.portalweb.objects.Address;
 import com.cgi.uswest.chimpls.portalweb.objects.Assignment;
 import com.cgi.uswest.chimpls.portalweb.objects.Episode;
 import com.cgi.uswest.chimpls.portalweb.objects.Message;
+import com.cgi.uswest.chimpls.portalweb.objects.MessagesDropdownValue;
 import com.cgi.uswest.chimpls.portalweb.objects.Payment;
 import com.cgi.uswest.chimpls.portalweb.objects.Person;
 import com.cgi.uswest.chimpls.portalweb.objects.ProviderDetail;
@@ -178,9 +180,26 @@ public class PortalwebApplicationController {
 		  List<Message> messages = messagesClient.getMessagesToMe(new BigDecimal(idprvdorg));
 		  for (int i = 0; i < messages.size(); i++) {
 			  
+			  
 			  // get person name from person service
 			  
 			  Message message = messages.get(i);
+
+			  Timestamp timestamp;
+			  
+			  try {
+				    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS");
+				    Date parsedDate = dateFormat.parse(message.getCreatedDate());
+				    timestamp = new java.sql.Timestamp(parsedDate.getTime());
+				  
+				  message.setCreatedDateTimestamp(timestamp);
+			  }
+			  catch (ParseException e) {
+				  // leave the timestamp as null if cannot be parsed, comparator will handle
+			  }
+
+			  
+			  
 			  Person person = personClient.getPersonDataByIdprsn(message.getFromId());
 			  message.setFromUserName(person.getNmlst() + ", " + person.getNmfrst());
 			  
@@ -188,7 +207,7 @@ public class PortalwebApplicationController {
 
 			  
 		  }
-		  //Collections.sort(messages, Collections.reverseOrder());
+		  Collections.reverse(messages);
 		  return messages;
 	  }
 	  
@@ -197,6 +216,21 @@ public class PortalwebApplicationController {
 		  List<Message> messages = messagesClient.getMessagesFromMe(new BigDecimal(idprvdorg));
 		  for (int i = 0; i < messages.size(); i++) {
 			  Message message = messages.get(i);
+			  
+			  Timestamp timestamp;
+			  
+			  try {
+				    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS");
+				    Date parsedDate = dateFormat.parse(message.getCreatedDate());
+				    timestamp = new java.sql.Timestamp(parsedDate.getTime());
+				  
+				  message.setCreatedDateTimestamp(timestamp);
+			  }
+			  catch (ParseException e) {
+				  // leave the timestamp as null if cannot be parsed, comparator will handle
+			  }
+
+			  
 			  Person person = personClient.getPersonDataByIdprsn(message.getToId());
 			  message.setToUserName(person.getNmlst() + ", " + person.getNmfrst());
 
@@ -205,7 +239,7 @@ public class PortalwebApplicationController {
 			  
 		  }
 		  
-		  //Collections.sort(messages, Collections.reverseOrder());
+		  Collections.reverse(messages);
 		  return messages;
 	  }
 	  
@@ -229,4 +263,48 @@ public class PortalwebApplicationController {
 		  
 	  }
 	  
+	  @RequestMapping("messages/dropdown/{idprvdorg}")
+	  public List<MessagesDropdownValue> findMessagesDropdownValues(@PathVariable("idprvdorg") String idprvdorg) {
+		  
+		  Assignment providerAssignment = assignmentClient.getProviderPrimaryAssignmentDataByIdprvdorg(idprvdorg);
+		  
+		  List<Episode> placements = placementsClient.getEpisodesByProvider(idprvdorg);
+		  
+		  List<String> workerIds = new ArrayList<String>();
+		  
+		  if (!workerIds.contains(providerAssignment.getId_prsn())) {
+			  workerIds.add(providerAssignment.getId_prsn());
+		  }
+		  
+		  for(int i = 0; i < placements.size(); i++) {
+			  
+			  String idcase = ((Episode) placements.get(i)).getIdcase();
+			  
+			  Assignment caseAssignment = assignmentClient.getCasePrimaryAssignmentDataByIdcase(idcase);
+			  
+			  if (!workerIds.contains(caseAssignment.getId_prsn())) {
+				  workerIds.add(caseAssignment.getId_prsn());
+			  }
+			  
+		  }
+		  
+		  List<MessagesDropdownValue> values = new ArrayList<MessagesDropdownValue>();
+		  
+		  for(int j = 0; j < workerIds.size(); j++) {
+			  
+			  Person person = personClient.getPersonDataByIdprsn((String)(workerIds.get(j)));
+			  
+			  if (person != null) {
+				  String personName = person.getNmlst() + ", " + person.getNmfrst();
+				  
+				  MessagesDropdownValue value = new MessagesDropdownValue(workerIds.get(j), personName);
+				  
+				  values.add(value);  
+			  }
+			  
+		  }
+		  
+		  return values;
+		  
+	  }
 }

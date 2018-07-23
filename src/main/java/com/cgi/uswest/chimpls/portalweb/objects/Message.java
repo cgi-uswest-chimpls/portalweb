@@ -1,6 +1,8 @@
 package com.cgi.uswest.chimpls.portalweb.objects;
 
-public class Message {
+import java.sql.Timestamp;
+
+public class Message implements Comparable<Message> {
 
 	private String id;
 	private String fromId;
@@ -15,12 +17,14 @@ public class Message {
 	private String fromUserName;
 	private String toUserName;
 	
+	private Timestamp createdDateTimestamp;
+	
 	Message() {}
 	
 	public Message(String id, String fromId, String fromUserType, String toId, String toUserType,
 			String title, String content, String attachment, String createdDate,
 			String deletedDate, String fromUserName,
-			String toUserName) {
+			String toUserName, Timestamp createdDateTimestamp) {
 		super();
 		this.id = id;
 		this.fromId = fromId;
@@ -34,8 +38,27 @@ public class Message {
 		this.deletedDate = deletedDate;
 		this.fromUserName = fromUserName;
 		this.toUserName = toUserName;
+		this.createdDateTimestamp = createdDateTimestamp;
 	}
 
+	public int compareTo(Message m) {
+		if (m.getCreatedDateTimestamp() == null) {
+			return this.getCreatedDateTimestamp() == null ? 0 : 1;
+		}
+		
+		if (this.getCreatedDateTimestamp() == null) {
+			return -1;
+		}
+		
+		if (this.getCreatedDateTimestamp().before(m.getCreatedDateTimestamp())) {
+			return 1;
+		}
+		else if (this.getCreatedDateTimestamp().equals(m.getCreatedDateTimestamp())) {
+			return 0;			
+		}
+		else return -1;
+	}
+	
 	public String getId() {
 		return id;
 	}
@@ -130,6 +153,14 @@ public class Message {
 
 	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public Timestamp getCreatedDateTimestamp() {
+		return createdDateTimestamp;
+	}
+
+	public void setCreatedDateTimestamp(Timestamp createdDateTimestamp) {
+		this.createdDateTimestamp = createdDateTimestamp;
 	}
 	
 }

@@ -70,7 +70,11 @@
 }
 
 .messages-header {
-	padding-top: 5px;
 	font-size: 18px;
 	font-weight: bold;
+}
+
+.messages-create {
+	font-size: 12px;
+	font-weight: normal;
 }
