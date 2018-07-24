@@ -19,7 +19,7 @@ public class Message implements Comparable<Message> {
 	
 	private Timestamp createdDateTimestamp;
 	
-	Message() {}
+	public Message() {}
 	
 	public Message(String id, String fromId, String fromUserType, String toId, String toUserType,
 			String title, String content, String attachment, String createdDate,

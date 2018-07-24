@@ -20,6 +20,7 @@ import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -173,6 +174,26 @@ public class PortalwebApplicationController {
 		  System.out.println("*****CONTROLLER: id_grp:" + id_grp);
 		  return sacwisUpdateClient.addSacwisUpdates(id_grp,cd_grp,cd_type,tx_update,id_cr,cd_stat);
 
+	  }
+	  
+	  @RequestMapping("messages/send/{idprvdorg}/{idprsn}")
+	  public ResponseEntity<String> sendMessage(@PathVariable("idprvdorg") String idprvdorg,
+			  	@PathVariable("idprsn") String idprsn,
+			    @RequestParam(value="title") String	title,
+			    @RequestParam(value="content") String content) {
+		  
+		  String body = "{";
+		  
+		  body += "\"fromId\": " + "\"" + idprvdorg + "\",";
+		  body += "\"fromUserType\": " + "\"" + "1" + "\",";
+		  body += "\"toId\": " + "\"" + idprsn + "\",";
+		  body += "\"toUserType\": " + "\"" + "0" + "\",";
+		  body += "\"title\": " + "\"" + title + "\",";
+		  body += "\"content\": " + "\"" + content + "\"";
+
+		  body += "}";
+
+		  return messagesClient.sendMessage(body);
 	  }
 	  
 	  @RequestMapping("messages/tome/{idprvdorg}")
