@@ -240,7 +240,9 @@ function loadMessagesToUser(idprvdorg) {
         	//$('#divProviderDetail').html(data);
         	
         	$('#divMessages').html(handlebars_messagesTemplate(result));
-        	loadMessagesFromUser(idprvdorg);
+            setTimeout(loadMessagesFromUser(idprvdorg), 1000);
+            
+
 
         },
         error: function () {
@@ -261,6 +263,7 @@ function loadMessagesFromUser(idprvdorg) {
         	
         	var data = JSON.stringify(result);
         	//$('#divProviderDetail').html(data);
+        	$('#totalSentMessages').val(result.length);
         	$('#sentMessagesHeader').html("Sent (" + result.length + ")");
         	$('#sentMessages').html(handlebars_sentMessagesTemplate(result));
 
@@ -314,7 +317,7 @@ function createMessage(idprvdorg) {
 	        contentType: "application/json",
 	        success: function (result) {
 
-	        	var select = $('<select>').attr('id', 'selectMessageRecipient');
+	        	var select = $('<select>').addClass('form-control').attr('id', 'selectMessageRecipient');
 
 	        	for (var i = 0; i < result.length; i++) {
 	        		var option = $('<option>').val(result[i].idPrsn).html(result[i].name);
@@ -346,7 +349,7 @@ function sendMessage() {
 	        type: "post",
 	        contentType: "application/json",
 	        success: function (result) {
-	        	alert("Message sent.");
+	        	displaySentMessage(title,content);
 	        	$('#createMessageModal').hide();
 	        },
 	        error: function () {
@@ -354,6 +357,59 @@ function sendMessage() {
 	        	$('#createMessageModal').hide();
 	        }
 	    });
+}
+
+function displaySentMessage(title,content) {
+	
+	var index = $('#totalSentMessages').val();
+	
+	$('#totalSentMessages').val(parseInt(index) + 1);
+	
+	$('#sentMessagesHeader').html("Sent (" + $('#totalSentMessages').val() + ")");
+	
+	var newSentHeader = $('<div>').attr('id', 'sentMessagesHeader' + index).addClass('message-read');
+	
+	var sentHeaderRow = $('<div>').addClass('row');
+	
+	var colEnvelope = $('<div>').addClass('col-sm-1').addClass('col-sm-offset-1').addClass('form-inline');
+	
+	var spanToggle = $('<span>').attr('onclick', 'toggleSentMessageBody('+index+')');
+	
+	var envelope = $('<span>').addClass('fa').addClass('fa-envelope').attr('id', 'sentMessageIcon' + index);
+	
+	spanToggle.append(envelope);
+	
+	colEnvelope.append(spanToggle);
+	
+	sentHeaderRow.append(colEnvelope);
+	
+	var colName = $('<div>').addClass('col-sm-2').html($('#selectMessageRecipient option:selected').text());
+	
+	sentHeaderRow.append(colName);
+	
+	var colTitle = $('<div>').addClass('col-sm-3').html(title);
+	
+	sentHeaderRow.append(colTitle);
+	
+	var colDate = $('<div>').addClass('col-sm-3').html('The date');
+	
+	sentHeaderRow.append(colDate);
+	
+	newSentHeader.append(sentHeaderRow);
+	
+	var sentBodyDiv = $('<div>').attr('id', 'sentMessageBody' + index).attr('style', 'display:none;').addClass('message-body');
+	
+	var sentBodyRow = $('<div>').addClass('row');
+	
+	var sentBodyCol = $('<div>').addClass('col-sm-10').addClass('col-sm-offset-2').html(content);
+	
+	sentBodyRow.append(sentBodyCol);
+	
+	sentBodyDiv.append(sentBodyRow);
+	
+	$('#sentMessages').prepend(sentBodyDiv).prepend(newSentHeader);
+	
+	
 }
 
 function loadProviderDetails(idprvdorg) {

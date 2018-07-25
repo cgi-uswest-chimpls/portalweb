@@ -32,6 +32,7 @@
 		<div class="authenticated">
 			<input type="hidden" id="userCounty" />
 			<input type="hidden" id="userIdPrvdOrg" />
+			<input type="hidden" id="totalSentMessages" />
 			<div class="navbar navbar-inverse cw-portal-navbar">
 				<div class="container-fluid">
 
@@ -173,19 +174,23 @@
 		      <div class="modal-body">
 		        <div class="container-fluid">
 					<div class="row">
-						<div class="col-sm-12 form-inline">
+						<div class="col-sm-4">
 							Select Worker:
-							<div id="divMessagesDropdown">
+						</div>
+							<div class="col-sm-8" id="divMessagesDropdown">
 							</div>
 						</div>
 					</div>
 					<div class="row">
-					<div class="col-sm-12 form-inline">
-						Subject: <input type="text" class="form-control" id="sendMessageSubject"/>
+					<div class="col-sm-4">
+						Subject:
+					</div>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" id="sendMessageSubject"/>
 					</div>
 					</div>
 					<div class="row">
-					<div class="col-sm-12 form-inline">
+					<div class="col-sm-12">
 						<textarea class="form-control" id="sendMessageContent">
 						</textarea>
 					</div>
