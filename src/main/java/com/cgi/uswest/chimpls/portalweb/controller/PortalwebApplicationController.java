@@ -29,6 +29,7 @@ import com.cgi.uswest.chimpls.portalweb.objects.Payment;
 import com.cgi.uswest.chimpls.portalweb.objects.Person;
 import com.cgi.uswest.chimpls.portalweb.objects.ProviderDetail;
 import com.cgi.uswest.chimpls.portalweb.objects.Quicklink;
+import com.cgi.uswest.chimpls.portalweb.objects.SacwisUpdate;
 import com.cgi.uswest.chimpls.portalweb.objects.User;
 import com.cgi.uswest.chimpls.portalweb.repository.UserRepository;
 
@@ -153,5 +154,10 @@ public class PortalwebApplicationController {
 		  System.out.println("*****CONTROLLER: id_grp:" + id_grp);
 		  return sacwisUpdateClient.addSacwisUpdates(id_grp,cd_grp,cd_type,tx_update,id_cr,cd_stat);
 
+	  }
+	  
+	  @RequestMapping("sacwisupdate/all")
+	   public List<SacwisUpdate> findSacwisUpdateByProvider() {
+		  return sacwisUpdateClient.getAllSacwisUpdates();
 	  }
 }

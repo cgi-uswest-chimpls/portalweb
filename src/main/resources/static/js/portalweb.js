@@ -221,7 +221,8 @@ function loadProviderAddress(idprvd) {
         success: function (result) {
         	
         	$('#divProviderAddress').html('Address: '+result.tx_adress 
-        			+ '&nbsp;&nbsp;&nbsp;&nbsp;<a class="provider-license" href="#" onclick="editPrvdAddress('+idprvd+');">Edit</a>');
+        			+ '&nbsp;&nbsp;&nbsp;&nbsp;<a class="provider-license" href="#" onclick="editPrvdAddress('+idprvd+');">Edit</a>'
+        			+ '&nbsp;&nbsp;&nbsp;&nbsp;<a class="provider-license" href="#" onclick="loadSacwisUpdateReq('+idprvd+');">Sacwis Update History</a>');
         },
         error: function () {
         	$('#divProviderAddress').html("An error occurred trying to access the endpoint " + 'address/providerAddress/' + idprvd);
@@ -238,6 +239,63 @@ function editPrvdAddress(p_idPrvd){
 	document.getElementById('updateType').value = "";
 	document.getElementById('txUpdt').value = "";
 	$('#sacwisUpdateModal').modal('show');
+}
+
+function loadSacwisUpdateReq(p_idPrvd) {
+
+   $.ajax({
+        url: 'sacwisupdate/all' ,
+    	datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	
+        	$('#sacwisUpdateReqTable').bootstrapTable({
+        		data: result,
+        		classes: 'table table-hover table-striped',
+        		columns: [{
+        			field: 'id_grp',
+        			title: 'Provider Id',
+        			sortable: true
+        		}, {
+        			field: 'cd_type',
+        			title: 'Update Type',
+        			formatter: typeFormat,
+        			sortable: true
+        		}, {
+        			field: 'tx_update',
+        			title: 'Update Requested',
+        			sortable: true
+        		}, {
+        			field: 'ts_cr',
+        			title: 'Date Requested',
+        			formatter: formatDateSlashes,
+        			sortable: true
+        		}, {
+        			field: 'cd_stat',
+        			title: 'Status',
+        			sortable: true
+        		}]
+        	});
+        	
+        	$('#sacwisUpdateReqModal').modal('show');
+        },
+        error: function () {
+        	$('#sacwisUpdateReqTable').html("<div style='color:white;'>An error occurred trying to access the endpoint sacwisupdate/all");
+        }
+    });
+    
+	
+}
+
+function typeFormat(value, row, index){
+	if (value=='1'){
+		return 'Address';
+	} else if (value=='2'){
+		return 'Phone';
+	} else {
+		return '';
+	}
 }
 
 function enblDsblTxt(){
