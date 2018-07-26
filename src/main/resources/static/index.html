@@ -165,10 +165,10 @@
 		</div><!-- /.modal -->
 		
 		<div id="createMessageModal" class="modal fade" tabindex="-1" role="dialog">
-		  <div class="modal-dialog" role="document">
+		  <div class="modal-dialog modal-lg" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <button type="button" class="close" data-dismiss="modal" onclick="clearMessageModal();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		        <h4 class="modal-title">Create Message</h4>
 		      </div>
 		      <div class="modal-body">
@@ -177,10 +177,10 @@
 						<div class="col-sm-4">
 							Select Worker:
 						</div>
-							<div class="col-sm-8" id="divMessagesDropdown">
-							</div>
+						<div class="col-sm-8" id="divMessagesDropdown">
 						</div>
 					</div>
+					<br/>
 					<div class="row">
 					<div class="col-sm-4">
 						Subject:
@@ -189,6 +189,7 @@
 						<input type="text" class="form-control" id="sendMessageSubject"/>
 					</div>
 					</div>
+					<br/>
 					<div class="row">
 					<div class="col-sm-12">
 						<textarea class="form-control" id="sendMessageContent">
@@ -198,8 +199,8 @@
 		        </div>
 		      </div>
 		      <div class="modal-footer">
-		      	<button type="button" class="btn btn-default" data-dismiss="modal" onclick="sendMessage();">Send</button>
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      	<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="sendMessage();">Send</button>
+		        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="clearMessageModal();">Close</button>
 		      </div>
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->

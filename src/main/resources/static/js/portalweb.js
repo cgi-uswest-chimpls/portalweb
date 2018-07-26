@@ -351,12 +351,34 @@ function sendMessage() {
 	        success: function (result) {
 	        	displaySentMessage(title,content);
 	        	$('#createMessageModal').hide();
+	        	clearMessageModal();
 	        },
 	        error: function () {
 	        	alert("Send failed.");
 	        	$('#createMessageModal').hide();
+	        	clearMessageModal();
 	        }
 	    });
+}
+
+function currentDate() {
+	
+	var today = new Date();
+	
+	var mm = today.getMonth() + 1;
+	var dd = today.getDate();
+	var year = today.getFullYear();
+	var curHour = today.getHours() > 12 ? today.getHours() - 12 : (today.getHours());
+	var curMinute = today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes();
+	var curMeridiem = today.getHours() > 12 ? "PM" : "AM";
+	
+	return mm + '/' + dd + '/' + year + ' ' + curHour + ':' + curMinute + ' ' + curMeridiem;
+	
+}
+
+function clearMessageModal() {
+	$('#sendMessageSubject').val('');
+	$('#sendMessageContent').val('');
 }
 
 function displaySentMessage(title,content) {
@@ -391,7 +413,7 @@ function displaySentMessage(title,content) {
 	
 	sentHeaderRow.append(colTitle);
 	
-	var colDate = $('<div>').addClass('col-sm-3').html('The date');
+	var colDate = $('<div>').addClass('col-sm-3').html(currentDate());
 	
 	sentHeaderRow.append(colDate);
 	
