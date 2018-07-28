@@ -32,6 +32,7 @@
 		<div class="authenticated">
 			<input type="hidden" id="userCounty" />
 			<input type="hidden" id="userIdPrvdOrg" />
+			<input type="hidden" id="totalSentMessages" />
 			<div class="navbar navbar-inverse cw-portal-navbar">
 				<div class="container-fluid">
 
@@ -64,17 +65,6 @@
 
 	    <div id="divMessages">
 
-			<div class="container-fluid">
-	
-				<div class="row">
-					<div class="col-sm-6">
-						This is the messages div
-					</div>
-					<div class="col-sm-6">
-						
-					</div>
-				</div>
-			</div>
 		</div>
 		
 		<div id="divChildrenInPlacement">
@@ -184,7 +174,49 @@
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-		
+
+		<div id="createMessageModal" class="modal fade" tabindex="-1" role="dialog">
+		  <div class="modal-dialog modal-lg" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" onclick="clearMessageModal();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title">Create Message</h4>
+		      </div>
+		      <div class="modal-body">
+		        <div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-4">
+							Select Worker:
+						</div>
+						<div class="col-sm-8" id="divMessagesDropdown">
+						</div>
+					</div>
+					<br/>
+					<div class="row">
+					<div class="col-sm-4">
+						Subject:
+					</div>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" id="sendMessageSubject"/>
+					</div>
+					</div>
+					<br/>
+					<div class="row">
+					<div class="col-sm-12">
+						<textarea class="form-control" id="sendMessageContent">
+						</textarea>
+					</div>
+					</div>
+		        </div>
+		      </div>
+		      <div class="modal-footer">
+		      	<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="sendMessage();">Send</button>
+		        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="clearMessageModal();">Close</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+            
 		<div id="sacwisUpdateReqModal" class="modal fade" tabindex="-1" role="dialog">
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content" style="width:750px;">
@@ -205,6 +237,89 @@
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 		
+		<script id="messagesTemplate" type="text/x-handlebars-template">
+			<div class="messages-header">	
+				<div class="row">
+					<div class="col-sm-2">
+						<span id="messagesHeader" onclick="showMessages();">
+							Messages ({{this.length}})
+						</span>
+					</div>
+					<div class="col-sm-2">
+						<span id="sentMessagesHeader" onclick="showSentMessages();">
+						</span>
+					</div>
+					<div class="col-sm-2">
+						<span id="createMessage" onclick="createMessage();" class="messages-create">
+							Create
+						</span>
+					</div>
+				</div>
+			</div>
+			<div id="messages">
+			{{#each this}}
+				<div id="messageHeader{{@index}}" class="message-read">
+					<div class="row">
+						<div class="col-sm-1 col-sm-offset-1 form-inline">
+							<span onclick="toggleMessageBody({{@index}});">
+								<span id="messageIcon{{@index}}" class="fa fa-envelope"></span>
+							</span>
+						</div>
+						<div class="col-sm-2">
+							{{fromUserName}}
+						</div>
+						<div class="col-sm-3">
+							{{title}}
+						</div>
+						<div class="col-sm-3">
+							{{formatDateSlashesWithTimestamp createdDate}}
+						</div>
+					</div>
+				</div>
+				<div id="messageBody{{@index}}" style="display: none;" class="message-body">
+					<div class="row">
+						<div class="col-sm-10 col-sm-offset-2">
+							{{content}}
+						</div>
+					</div>
+				</div>
+			{{/each}}
+			</div>
+			<div id="sentMessages" style="display:none;">
+			</div>
+		</script>
+		
+		<script id="sentMessagesTemplate" type="text/x-handlebars-template">
+			{{#each this}}
+				<div id="sentMessageHeader{{@index}}" class="message-read">
+					<div class="row">
+						<div class="col-sm-1 col-sm-offset-1 form-inline">
+							<span onclick="toggleSentMessageBody({{@index}});">
+								<span id="sentMessageIcon{{@index}}" class="fa fa-envelope"></span>
+							</span>
+						</div>
+						<div class="col-sm-2">
+							{{toUserName}}
+						</div>
+						<div class="col-sm-3">
+							{{title}}
+						</div>
+						<div class="col-sm-3">
+							{{formatDateSlashesWithTimestamp createdDate}}
+						</div>
+					</div>
+				</div>
+				<div id="sentMessageBody{{@index}}" style="display: none;" class="message-body">
+					<div class="row">
+						<div class="col-sm-10 col-sm-offset-2">
+							{{content}}
+						</div>
+					</div>
+				</div>
+				
+			{{/each}}			
+		</script>
+	
 		<script id="placementsTemplate" type="text/x-handlebars-template">
 			{{#each this}}
 				<div class="kids-row-format">

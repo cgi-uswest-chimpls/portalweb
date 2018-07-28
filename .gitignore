@@ -71,3 +71,8 @@ hs_err_pid*
 *.lock
 bin/main/bootstrap.yml
 portalweb-manifest.yml
+portalweb-manifest.yml
+bin/main/bootstrap.yml
+.gradle/buildOutputCleanup/outputFiles.bin
+*.lock
+*.bin

@@ -1,6 +1,8 @@
 var handlebars_placementsTemplate;
 var handlebars_providerDetailsTemplate;
 var handlebars_quicklinksTemplate;
+var handlebars_messagesTemplate;
+var handlebars_sentMessagesTemplate;
 
 $.ajaxSetup({
 	beforeSend : function(xhr, settings) {
@@ -32,6 +34,8 @@ function loadProvider() {
 	handlebars_placementsTemplate = Handlebars.compile($('#placementsTemplate').html());
 	handlebars_providerDetailsTemplate = Handlebars.compile($('#providerDetailsTemplate').html());
 	handlebars_quicklinksTemplate = Handlebars.compile($('#quicklinksTemplate').html());
+	handlebars_messagesTemplate = Handlebars.compile($('#messagesTemplate').html());
+	handlebars_sentMessagesTemplate = Handlebars.compile($('#sentMessagesTemplate').html());
 	
 	registerHandlebarsHelpers();
 	
@@ -48,6 +52,7 @@ function loadProvider() {
         	
         	idprvdorg = result.idprvdorg;
         	
+        	loadMessagesToUser(idprvdorg);
         	loadProviderDetails(idprvdorg);
         	loadProviderPlacements(idprvdorg);
         },
@@ -170,6 +175,27 @@ function registerHandlebarsHelpers() {
 		  return new Handlebars.SafeString(month + "/" + day + "/" + year);
 	});
 	
+	Handlebars.registerHelper('formatDateSlashesWithTimestamp', function(text, url) {
+	
+		  var year = text.substring(0,4);
+		  var month = parseInt(text.substring(5,7));
+		  var day = parseInt(text.substring(8,10));
+
+		  var hour = parseInt(text.substring(11,13));
+		  var minute = parseInt(text.substring(14,16));
+		  
+		  var ampm = "AM";
+		  if (hour > 12) {
+			  hour = hour - 12;
+			  ampm = "PM";
+		  }
+		  
+		  return new Handlebars.SafeString(month + "/" + day + "/" + year + 
+				  " " + hour + ":" + minute + " " + ampm);
+		
+	});
+	
+	
 }
 
 function formatDateSlashes(value, row, index, field) {
@@ -180,8 +206,232 @@ function formatDateSlashes(value, row, index, field) {
 	  return month + "/" + day + "/" + year;
 }
 
+function formatDateSlashesWithTimestamp(value, row, index, field) {
+	  var year = value.substring(0,4);
+	  var month = parseInt(value.substring(5,7));
+	  var day = parseInt(value.substring(8,10));
+
+	  var hour = parseInt(value.substring(11,13));
+	  var minute = parseInt(value.substring(14,16));
+	  
+	  var ampm = "AM";
+	  if (hour > 12) {
+		  hour = hour - 12;
+		  ampm = "PM";
+	  }
+	  
+	  return month + "/" + day + "/" + year + " " + hour + ":" + minute + " " + ampm;
+}
+
 function formatDollars(value, row, index, field) {
 	return '$' + Number(Math.round(parseFloat(value)+'e2')+'e-2').toFixed(2);
+}
+
+function loadMessagesToUser(idprvdorg) {
+	
+    $.ajax({
+        url: 'messages/tome/' + idprvdorg,
+    	datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	
+        	var data = JSON.stringify(result);
+        	//$('#divProviderDetail').html(data);
+        	
+        	$('#divMessages').html(handlebars_messagesTemplate(result));
+            setTimeout(loadMessagesFromUser(idprvdorg), 1000);
+            
+
+
+        },
+        error: function () {
+        	$('#divMessages').html("<div>An error occurred trying to access the endpoint " + 'messages/tome/' + idprvdorg + "</div>");
+        }
+    });
+	
+}
+
+function loadMessagesFromUser(idprvdorg) {
+	
+    $.ajax({
+        url: 'messages/fromme/' + idprvdorg,
+    	datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	
+        	var data = JSON.stringify(result);
+        	//$('#divProviderDetail').html(data);
+        	$('#totalSentMessages').val(result.length);
+        	$('#sentMessagesHeader').html("Sent (" + result.length + ")");
+        	$('#sentMessages').html(handlebars_sentMessagesTemplate(result));
+
+        },
+        error: function () {
+        	$('#sentMessages').html("<div>An error occurred trying to access the endpoint " + 'messages/fromme/' + idprvdorg + "</div>");
+        }
+    });
+	
+}
+
+function showMessages() {
+	$('#messages').show();
+	$('#sentMessages').hide();
+}
+
+function showSentMessages() {
+	$('#sentMessages').show();
+	$('#messages').hide();
+}
+
+function toggleMessageBody(index) {
+	if ($('#messageIcon'+index).hasClass('fa-envelope')) {
+		$('#messageIcon'+index).removeClass('fa-envelope').addClass('fa-envelope-open');
+		$('#messageBody'+index).show();
+	}
+	else {
+		$('#messageIcon'+index).removeClass('fa-envelope-open').addClass('fa-envelope');
+		$('#messageBody'+index).hide();
+	}
+}
+
+function toggleSentMessageBody(index) {
+	if ($('#sentMessageIcon'+index).hasClass('fa-envelope')) {
+		$('#sentMessageIcon'+index).removeClass('fa-envelope').addClass('fa-envelope-open');
+		$('#sentMessageBody'+index).show();
+	}
+	else {
+		$('#sentMessageIcon'+index).removeClass('fa-envelope-open').addClass('fa-envelope');
+		$('#sentMessageBody'+index).hide();
+	}
+}
+
+function createMessage(idprvdorg) {
+	   var userIdPrvdOrg = $('#userIdPrvdOrg').val();
+		
+	   $.ajax({
+	        url: 'messages/dropdown/' + userIdPrvdOrg ,
+	    	datatype: 'json',
+	        type: "get",
+	        contentType: "application/json",
+	        success: function (result) {
+
+	        	var select = $('<select>').addClass('form-control').attr('id', 'selectMessageRecipient');
+
+	        	for (var i = 0; i < result.length; i++) {
+	        		var option = $('<option>').val(result[i].idPrsn).html(result[i].name);
+	        		select.append(option);
+	        	}
+	        	
+	        	$('#divMessagesDropdown').html("").append(select);
+	        	
+	        	$('#createMessageModal').modal('show');
+	        },
+	        error: function () {
+	        	$('#divMessagesDropdown').html("An error occurred trying to access the endpoint messages/dropdown/" + userIdPrvdOrg);
+	        }
+	    });
+}
+
+function sendMessage() {
+	
+		var userIdPrvdOrg = $('#userIdPrvdOrg').val();
+		var selectedRecipient = $('#selectMessageRecipient').val();
+		var title = $('#sendMessageSubject').val();
+		var content = $('#sendMessageContent').val();
+		
+	   $.ajax({
+	        url: 'messages/send/' + userIdPrvdOrg + "/" + selectedRecipient +
+	        	'?title=' + title +
+	        	'&content=' + content,
+	        datatype: 'String',
+	        type: "post",
+	        contentType: "application/json",
+	        success: function (result) {
+	        	displaySentMessage(title,content);
+	        	$('#createMessageModal').hide();
+	        	clearMessageModal();
+	        },
+	        error: function () {
+	        	alert("Send failed.");
+	        	$('#createMessageModal').hide();
+	        	clearMessageModal();
+	        }
+	    });
+}
+
+function currentDate() {
+	
+	var today = new Date();
+	
+	var mm = today.getMonth() + 1;
+	var dd = today.getDate();
+	var year = today.getFullYear();
+	var curHour = today.getHours() > 12 ? today.getHours() - 12 : (today.getHours());
+	var curMinute = today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes();
+	var curMeridiem = today.getHours() > 12 ? "PM" : "AM";
+	
+	return mm + '/' + dd + '/' + year + ' ' + curHour + ':' + curMinute + ' ' + curMeridiem;
+	
+}
+
+function clearMessageModal() {
+	$('#sendMessageSubject').val('');
+	$('#sendMessageContent').val('');
+}
+
+function displaySentMessage(title,content) {
+	
+	var index = $('#totalSentMessages').val();
+	
+	$('#totalSentMessages').val(parseInt(index) + 1);
+	
+	$('#sentMessagesHeader').html("Sent (" + $('#totalSentMessages').val() + ")");
+	
+	var newSentHeader = $('<div>').attr('id', 'sentMessagesHeader' + index).addClass('message-read');
+	
+	var sentHeaderRow = $('<div>').addClass('row');
+	
+	var colEnvelope = $('<div>').addClass('col-sm-1').addClass('col-sm-offset-1').addClass('form-inline');
+	
+	var spanToggle = $('<span>').attr('onclick', 'toggleSentMessageBody('+index+')');
+	
+	var envelope = $('<span>').addClass('fa').addClass('fa-envelope').attr('id', 'sentMessageIcon' + index);
+	
+	spanToggle.append(envelope);
+	
+	colEnvelope.append(spanToggle);
+	
+	sentHeaderRow.append(colEnvelope);
+	
+	var colName = $('<div>').addClass('col-sm-2').html($('#selectMessageRecipient option:selected').text());
+	
+	sentHeaderRow.append(colName);
+	
+	var colTitle = $('<div>').addClass('col-sm-3').html(title);
+	
+	sentHeaderRow.append(colTitle);
+	
+	var colDate = $('<div>').addClass('col-sm-3').html(currentDate());
+	
+	sentHeaderRow.append(colDate);
+	
+	newSentHeader.append(sentHeaderRow);
+	
+	var sentBodyDiv = $('<div>').attr('id', 'sentMessageBody' + index).attr('style', 'display:none;').addClass('message-body');
+	
+	var sentBodyRow = $('<div>').addClass('row');
+	
+	var sentBodyCol = $('<div>').addClass('col-sm-10').addClass('col-sm-offset-2').html(content);
+	
+	sentBodyRow.append(sentBodyCol);
+	
+	sentBodyDiv.append(sentBodyRow);
+	
+	$('#sentMessages').prepend(sentBodyDiv).prepend(newSentHeader);
+	
+	
 }
 
 function loadProviderDetails(idprvdorg) {
@@ -394,7 +644,7 @@ function loadChildInPlacementData(idprsn) {
         success: function (result) {
         	
         	$('#divChildName'+idprsn).html(result.nmfrst + ' ' + result.nmlst + spanChildPaymentIcon(idprsn));
-        	$('#divChildPlan'+idprsn).html(result.nmfrst + "'s Plan");   
+        	$('#divChildPlan'+idprsn).html(result.nmfrst);   
         	$('#divChildAge'+idprsn).html('Age: ' + result.qtage);
         	$('#divChildImage'+idprsn).html('<img src="'+result.tximagelink+'" class="img-circle cw-portal-navbar-image" ></img>');
         },
