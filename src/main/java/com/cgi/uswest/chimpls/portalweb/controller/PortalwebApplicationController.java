@@ -336,6 +336,8 @@ public class PortalwebApplicationController {
 		  }
 		  
 		  return values;
+	  }
+	  
 	  @RequestMapping("sacwisupdate/all")
 	   public List<SacwisUpdate> findSacwisUpdateByProvider() {
 		  return sacwisUpdateClient.getAllSacwisUpdates();
