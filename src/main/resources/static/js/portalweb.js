@@ -471,7 +471,8 @@ function loadProviderAddress(idprvd) {
         success: function (result) {
         	
         	$('#divProviderAddress').html('Address: '+result.tx_adress 
-        			+ '&nbsp;&nbsp;&nbsp;&nbsp;<a class="provider-license" href="#" onclick="editPrvdAddress('+idprvd+');">Edit</a>');
+        			+ '&nbsp;&nbsp;&nbsp;&nbsp;<a class="provider-license" href="#" onclick="editPrvdAddress('+idprvd+');">Edit</a>'
+        			+ '&nbsp;&nbsp;&nbsp;&nbsp;<a class="provider-license" href="#" onclick="loadSacwisUpdateReq('+idprvd+');">Sacwis Update History</a>');
         },
         error: function () {
         	$('#divProviderAddress').html("An error occurred trying to access the endpoint " + 'address/providerAddress/' + idprvd);
@@ -483,7 +484,68 @@ function loadProviderAddress(idprvd) {
 function editPrvdAddress(p_idPrvd){
 	//alert('PrvdId: ' + p_idPrvd);
 	document.getElementById('id_grp').value = p_idPrvd;
+	document.getElementById('dataContainer').style.display = 'inline';
+	document.getElementById('dataSavedContainer').style.display = 'none';
+	document.getElementById('updateType').value = "";
+	document.getElementById('txUpdt').value = "";
 	$('#sacwisUpdateModal').modal('show');
+}
+
+function loadSacwisUpdateReq(p_idPrvd) {
+
+   $.ajax({
+        url: 'sacwisupdate/all' ,
+    	datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	
+        	$('#sacwisUpdateReqTable').bootstrapTable({
+        		data: result,
+        		classes: 'table table-hover table-striped',
+        		columns: [{
+        			field: 'id_grp',
+        			title: 'Provider Id',
+        			sortable: true
+        		}, {
+        			field: 'cd_type',
+        			title: 'Update Type',
+        			formatter: typeFormat,
+        			sortable: true
+        		}, {
+        			field: 'tx_update',
+        			title: 'Update Requested',
+        			sortable: true
+        		}, {
+        			field: 'ts_cr',
+        			title: 'Date Requested',
+        			formatter: formatDateSlashes,
+        			sortable: true
+        		}, {
+        			field: 'cd_stat',
+        			title: 'Status',
+        			sortable: true
+        		}]
+        	});
+        	
+        	$('#sacwisUpdateReqModal').modal('show');
+        },
+        error: function () {
+        	$('#sacwisUpdateReqTable').html("<div style='color:white;'>An error occurred trying to access the endpoint sacwisupdate/all");
+        }
+    });
+    
+	
+}
+
+function typeFormat(value, row, index){
+	if (value=='1'){
+		return 'Address';
+	} else if (value=='2'){
+		return 'Phone';
+	} else {
+		return '';
+	}
 }
 
 function enblDsblTxt(){
@@ -505,14 +567,16 @@ function saveSacwisUpdate(){
 			    +'&tx_update=' + document.getElementById('txUpdt').value 
 			    +'&id_cr='+document.getElementById('id_grp').value 
 			    +'&cd_stat=P';
-	alert(m_url);
+	
 	$.ajax({
         url: m_url,
         datatype: 'String',
         type: "POST",
         contentType: "application/json",
         success: function (result) {
-        	alert('saved');
+//        	alert('saved');
+        	document.getElementById('dataContainer').style.display = 'none';
+        	document.getElementById('dataSavedContainer').style.display = 'inline';
         },
         error: function () {
         	alert('error');

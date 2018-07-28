@@ -27,8 +27,17 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cgi.uswest.chimpls.portalweb.clients.AddressClient;
+import com.cgi.uswest.chimpls.portalweb.clients.AssignmentClient;
+import com.cgi.uswest.chimpls.portalweb.clients.PaymentsClient;
+import com.cgi.uswest.chimpls.portalweb.clients.PersonClient;
+import com.cgi.uswest.chimpls.portalweb.clients.PlacementsClient;
+import com.cgi.uswest.chimpls.portalweb.clients.ProviderDetailClient;
+import com.cgi.uswest.chimpls.portalweb.clients.QuicklinkClient;
+import com.cgi.uswest.chimpls.portalweb.clients.SacwisUpdateClient;
 import com.cgi.uswest.chimpls.portalweb.objects.Address;
 import com.cgi.uswest.chimpls.portalweb.objects.Assignment;
 import com.cgi.uswest.chimpls.portalweb.objects.Episode;
@@ -38,6 +47,7 @@ import com.cgi.uswest.chimpls.portalweb.objects.Payment;
 import com.cgi.uswest.chimpls.portalweb.objects.Person;
 import com.cgi.uswest.chimpls.portalweb.objects.ProviderDetail;
 import com.cgi.uswest.chimpls.portalweb.objects.Quicklink;
+import com.cgi.uswest.chimpls.portalweb.objects.SacwisUpdate;
 import com.cgi.uswest.chimpls.portalweb.objects.User;
 import com.cgi.uswest.chimpls.portalweb.repository.UserRepository;
 import com.cgi.uswest.chimpls.portalweb.clients.AddressClient;
@@ -165,17 +175,17 @@ public class PortalwebApplicationController {
 	  }
 
 	  @RequestMapping("sacwisupdate/add")
-	   public String addSacwisUpdates(@RequestParam(value="id_grp") String id_grp,
-			    @RequestParam(value="cd_grp") String	cd_grp,
-				@RequestParam(value="cd_type") String cd_type, 
-				@RequestParam(value="tx_update") String tx_update,
-				@RequestParam(value="id_cr") String id_cr,
-				@RequestParam(value="cd_stat") String cd_stat) {
+	  public @ResponseBody String addSacwisUpdates(@RequestParam BigDecimal id_grp,
+			    @RequestParam String	cd_grp,
+				@RequestParam BigDecimal cd_type, 
+				@RequestParam String tx_update,
+				@RequestParam BigDecimal id_cr,
+				@RequestParam String cd_stat) {
 		  System.out.println("*****CONTROLLER: id_grp:" + id_grp);
 		  return sacwisUpdateClient.addSacwisUpdates(id_grp,cd_grp,cd_type,tx_update,id_cr,cd_stat);
 
 	  }
-	  
+
 	  @RequestMapping("messages/send/{idprvdorg}/{idprsn}")
 	  public ResponseEntity<String> sendMessage(@PathVariable("idprvdorg") String idprvdorg,
 			  	@PathVariable("idprsn") String idprsn,
@@ -326,6 +336,8 @@ public class PortalwebApplicationController {
 		  }
 		  
 		  return values;
-		  
+	  @RequestMapping("sacwisupdate/all")
+	   public List<SacwisUpdate> findSacwisUpdateByProvider() {
+		  return sacwisUpdateClient.getAllSacwisUpdates();
 	  }
 }

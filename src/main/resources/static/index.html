@@ -138,6 +138,7 @@
 		        <h4 class="modal-title">Sacwis Update</h4>
 		      </div>
 		      <div class="modal-body">
+		        	<div class="container" id="dataContainer">
 		        	<div class="row">
 		        		<div class="col-sm-3">Update Type:</div>
 		        		<div class="col-sm-8">
@@ -155,6 +156,16 @@
 		        		<input style="width:100%;" id="txUpdt" name="txUpdt" type="text" disabled="disabled">
 		        		</div>
 		        	</div>
+		        	</div>
+		        	<div class="container" id="dataSavedContainer" style="display: none;">
+		        		<div class="row">
+		        		<div class="col-sm-11">
+		        		<button type="button" class="btn btn-default btn-lg">
+						  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Saved
+						</button>
+		        		</div>
+		        		</div>
+		        	</div>
 		      </div>
 		      <div class="modal-footer">
 		        <button id="btnUpdtSave" type="button" class="btn btn-primary" onclick="saveSacwisUpdate();" disabled="disabled">Save</button>
@@ -163,7 +174,7 @@
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-		
+
 		<div id="createMessageModal" class="modal fade" tabindex="-1" role="dialog">
 		  <div class="modal-dialog modal-lg" role="document">
 		    <div class="modal-content">
@@ -201,6 +212,26 @@
 		      <div class="modal-footer">
 		      	<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="sendMessage();">Send</button>
 		        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="clearMessageModal();">Close</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+            
+		<div id="sacwisUpdateReqModal" class="modal fade" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content" style="width:750px;">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title">Sacwis Update Requests</h4>
+		      </div>
+		      <div class="modal-body" style="width:700px;">
+		        <div id="divSacwisUpdateReq">
+		        	<table id="sacwisUpdateReqTable">
+		        	</table>
+		        </div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 		      </div>
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
@@ -288,7 +319,7 @@
 				
 			{{/each}}			
 		</script>
-		
+	
 		<script id="placementsTemplate" type="text/x-handlebars-template">
 			{{#each this}}
 				<div class="kids-row-format">
