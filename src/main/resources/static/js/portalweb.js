@@ -240,15 +240,69 @@ function loadMessagesToUser(idprvdorg) {
         	//$('#divProviderDetail').html(data);
         	
         	$('#divMessages').html(handlebars_messagesTemplate(result));
-            setTimeout(loadMessagesFromUser(idprvdorg), 1000);
-            
 
+        	for(var i = 0; i < result.length; i++) {
+        		loadAttachmentsForMessage(result[i].id, "to", i);
+        	}
+        	
+            setTimeout(loadMessagesFromUser(idprvdorg), 2000);
 
         },
         error: function () {
         	$('#divMessages').html("<div>An error occurred trying to access the endpoint " + 'messages/tome/' + idprvdorg + "</div>");
         }
     });
+	
+}
+
+function loadAttachmentsForMessage(idmessage, fromTo, index) {
+	
+    $.ajax({
+        url: 'attachmentsByMessage/' + idmessage,
+    	datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	
+        	if (result.length > 0) {
+        		
+            	var title = "";
+            	var id = "";
+            	
+            	for(var i = 0; i < result.length; i++) {
+            		if (title != "") {
+            			title += ",";
+            		}
+            		
+            		title += result[i].filename;
+            		id += result[i].id;
+            	}
+
+            	$('#' + fromTo + 'MessageAttachments' + index).attr('title', title).attr('data-attachmentids', id);
+        		
+        		$('#' + fromTo + 'MessageAttachments' + index).show();
+        	}
+        	else {
+        		$('#' + fromTo + 'MessageAttachments' + index).hide();
+        	}
+        	
+
+        },
+        error: function () {
+        	//$('#divMessages').html("<div>An error occurred trying to access the endpoint " + 'messages/tome/' + idprvdorg + "</div>");
+        }
+    });
+}
+
+function showAttachment(spanid) {
+	
+	var id = $('#' + spanid).attr('data-attachmentids');
+	var title = $('#' + spanid).attr('title');
+	
+	$('#attachmentFrame').attr('src', 'attachmentById/' + id);
+	$('#singleAttachmentTitle').html(title);
+	
+	$('#singleAttachmentModal').modal('show');
 	
 }
 
@@ -266,6 +320,10 @@ function loadMessagesFromUser(idprvdorg) {
         	$('#totalSentMessages').val(result.length);
         	$('#sentMessagesHeader').html("Sent (" + result.length + ")");
         	$('#sentMessages').html(handlebars_sentMessagesTemplate(result));
+        	
+        	for(var i = 0; i < result.length; i++) {
+        		loadAttachmentsForMessage(result[i].id, "from", i);
+        	}
 
         },
         error: function () {

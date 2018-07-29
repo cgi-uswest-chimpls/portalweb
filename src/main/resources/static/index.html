@@ -237,6 +237,24 @@
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 		
+		<div id="singleAttachmentModal" class="modal fade" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title"><span id="singleAttachmentTitle"></span></h4>
+		      </div>
+		      <div class="modal-body">
+		        <iframe id="attachmentFrame" width="200" height="200">
+		        </iframe>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		
 		<script id="messagesTemplate" type="text/x-handlebars-template">
 			<div class="messages-header">	
 				<div class="row">
@@ -269,7 +287,7 @@
 							{{fromUserName}}
 						</div>
 						<div class="col-sm-3">
-							{{title}}
+							{{title}}&nbsp;<span onclick="showAttachment('toMessageAttachments{{@index}}');"><span id="toMessageAttachments{{@index}}" class="fa fa-paperclip" style="display:none;"></span></span>
 						</div>
 						<div class="col-sm-3">
 							{{formatDateSlashesWithTimestamp createdDate}}
@@ -302,7 +320,7 @@
 							{{toUserName}}
 						</div>
 						<div class="col-sm-3">
-							{{title}}
+							{{title}}&nbsp;<span onclick="showAttachment('fromMessageAttachments{{@index}}');"><span id="fromMessageAttachments{{@index}}" class="fa fa-paperclip" style="display:none;"></span></span>
 						</div>
 						<div class="col-sm-3">
 							{{formatDateSlashesWithTimestamp createdDate}}

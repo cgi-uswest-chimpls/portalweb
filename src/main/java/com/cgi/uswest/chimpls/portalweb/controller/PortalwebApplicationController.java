@@ -1,5 +1,6 @@
 package com.cgi.uswest.chimpls.portalweb.controller;
 
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.sql.Timestamp;
@@ -20,6 +21,9 @@ import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cgi.uswest.chimpls.portalweb.clients.AddressClient;
 import com.cgi.uswest.chimpls.portalweb.clients.AssignmentClient;
+import com.cgi.uswest.chimpls.portalweb.clients.AttachmentsClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PaymentsClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PersonClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PlacementsClient;
@@ -40,6 +45,7 @@ import com.cgi.uswest.chimpls.portalweb.clients.QuicklinkClient;
 import com.cgi.uswest.chimpls.portalweb.clients.SacwisUpdateClient;
 import com.cgi.uswest.chimpls.portalweb.objects.Address;
 import com.cgi.uswest.chimpls.portalweb.objects.Assignment;
+import com.cgi.uswest.chimpls.portalweb.objects.Attachment;
 import com.cgi.uswest.chimpls.portalweb.objects.Episode;
 import com.cgi.uswest.chimpls.portalweb.objects.Message;
 import com.cgi.uswest.chimpls.portalweb.objects.MessagesDropdownValue;
@@ -93,6 +99,9 @@ public class PortalwebApplicationController {
 	
 	@Autowired
 	private MessagesClient messagesClient;
+	
+	@Autowired
+	private AttachmentsClient attachmentsClient;
 	
 	  @RequestMapping("currentUser")
 	  public User user(Principal principal) {
@@ -342,4 +351,28 @@ public class PortalwebApplicationController {
 	   public List<SacwisUpdate> findSacwisUpdateByProvider() {
 		  return sacwisUpdateClient.getAllSacwisUpdates();
 	  }
+	  
+	  @RequestMapping("attachmentsByMessage/{idmessage}")
+	  public List<Attachment> findAttachmentsByMessage(@PathVariable String idmessage) {
+		  return attachmentsClient.getAttachmentsByMessage(idmessage);
+	  }
+
+	  @RequestMapping("attachmentById/{id}")
+	  public ResponseEntity<ByteArrayResource> findAttachmentById(@PathVariable String id) {
+		  byte[] bytes = attachmentsClient.getAttachmentById(id);
+		  
+		  HttpHeaders headers = new HttpHeaders();
+	      headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+	      headers.add("Pragma", "no-cache");
+	      headers.add("Expires", "0");
+		  
+	      ByteArrayResource resource = new ByteArrayResource(bytes);
+	      
+	      return ResponseEntity.ok()
+	              .headers(headers)
+	              .contentLength(bytes.length)
+	              .contentType(MediaType.parseMediaType("application/octet-stream"))
+	              .body(resource);
+	  }
+
 }
