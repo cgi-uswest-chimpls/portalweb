@@ -12,6 +12,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -358,21 +359,13 @@ public class PortalwebApplicationController {
 	  }
 
 	  @RequestMapping("attachmentById/{id}")
-	  public ResponseEntity<ByteArrayResource> findAttachmentById(@PathVariable String id) {
+	  public String findAttachmentById(@PathVariable String id) {
 		  byte[] bytes = attachmentsClient.getAttachmentById(id);
 		  
-		  HttpHeaders headers = new HttpHeaders();
-	      headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-	      headers.add("Pragma", "no-cache");
-	      headers.add("Expires", "0");
-		  
-	      ByteArrayResource resource = new ByteArrayResource(bytes);
+		  byte[] encoded = Base64.getEncoder().encode(bytes);
+		  return new String(encoded);
 	      
-	      return ResponseEntity.ok()
-	              .headers(headers)
-	              .contentLength(bytes.length)
-	              .contentType(MediaType.parseMediaType("application/octet-stream"))
-	              .body(resource);
+
 	  }
 
 }

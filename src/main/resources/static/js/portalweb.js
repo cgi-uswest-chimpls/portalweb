@@ -299,7 +299,41 @@ function showAttachment(spanid) {
 	var id = $('#' + spanid).attr('data-attachmentids');
 	var title = $('#' + spanid).attr('title');
 	
-	$('#attachmentFrame').attr('src', 'attachmentById/' + id);
+	$('#attachmentDiv').empty();
+	
+
+	var data;
+	
+    $.ajax({
+        url: 'attachmentById/' + id,
+    	datatype: 'json',
+        type: "get",
+        contentType: "application/text",
+        success: function (result) {
+        	
+        	if (title.indexOf('.pdf') > -1) {
+        		var obj = $('<object>').attr('width', '100%').attr('data', 'data:application/pdf;base64, ' + result).
+        			attr('type', 'application/pdf');
+        		
+        		$('#attachmentDiv').append(obj);
+        	}
+        	else if (title.indexOf('.png') > -1){
+        		
+        		var img = $('<img>').attr('src', 'data:image/png;base64, ' + result);
+        		$('#attachmentDiv').append(img);
+        		
+        	}
+
+        },
+        error: function () {
+        	//$('#divMessages').html("<div>An error occurred trying to access the endpoint " + 'messages/tome/' + idprvdorg + "</div>");
+        }
+    });
+		
+
+	
+	
+
 	$('#singleAttachmentTitle').html(title);
 	
 	$('#singleAttachmentModal').modal('show');
