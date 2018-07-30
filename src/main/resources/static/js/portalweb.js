@@ -162,6 +162,56 @@ function paymentsByProvider() {
 	
 }
 
+function members() {
+
+	   var userIdPrvdOrg = $('#userIdPrvdOrg').val();
+		
+	   $.ajax({
+	        url: 'membersByProvider/' + userIdPrvdOrg ,
+	    	datatype: 'json',
+	        type: "get",
+	        contentType: "application/json",
+	        success: function (result) {
+	        	
+	        	$('#membersTable').bootstrapTable({
+	        		data: result,
+	        		classes: 'table table-hover table-striped',
+	        		columns: [{
+	        			field: 'nmfrst',
+	        			title: 'First Name',
+	        			sortable: true
+	        		}, {
+	        			field: 'nmlst',
+	        			title: 'Last Name',
+	        			sortable: true
+	        		}, {
+	        			field: 'dtbrth',
+	        			title: 'Date of Birth',
+	        			formatter: formatDateSlashes,
+	        			sortable: true
+	        		}, {
+	        			field: 'qtage',
+	        			title: 'Age',
+	        			sortable: true
+	        		}, {
+	        			field: 'flinhome',
+	        			title: 'In Home',
+	        			sortable: true
+	        		}, {
+	        		    title: 'Update',
+	        		    sortable: false
+	        		}]
+	        	});
+	        	
+	        	$('#membersModal').modal('show');
+	        },
+	        error: function () {
+	        	$('#membersTable').html("<div>An error occurred trying to access the endpoint membersByProvider/" + userIdPrvdOrg);
+	        }
+	    });
+		
+	}
+
 function registerHandlebarsHelpers() {
 	
 	Handlebars.registerHelper('formatDateSlashes', function(text, url) {

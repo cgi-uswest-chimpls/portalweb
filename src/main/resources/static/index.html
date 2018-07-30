@@ -52,11 +52,13 @@
 				      	<div class="col-sm-1">
 				      	</div>
 				      	<div class="col-sm-2">
-				      		<span onclick="paymentsByProvider()"><span class="fa fa-2x fa-hand-holding-usd" style="color:white;"></span></span>
+				      		<span onclick="members()" title="Members"><span class="fa fa-2x fa-home" style="color:white;"></span></span>
 				      		&nbsp;
-				      		<span onclick="help()"><span class="fa fa-2x fa-question" style="color:white;"></span></span>
+				      		<span onclick="paymentsByProvider()" title="Payments"><span class="fa fa-2x fa-hand-holding-usd" style="color:white;"></span></span>
 				      		&nbsp;
-				      		<span onclick="logout()"><span class="fa fa-2x fa-sign-out-alt" style="color:white;"></span></span>
+				      		<span onclick="help()" title="Help"><span class="fa fa-2x fa-question" style="color:white;"></span></span>
+				      		&nbsp;
+				      		<span onclick="logout()" title="Logout"><span class="fa fa-2x fa-sign-out-alt" style="color:white;"></span></span>
 				      	</div>
 				      </div>
 				    
@@ -81,6 +83,26 @@
 		      </div>
 		      <div class="modal-body">
 		        <div id="divQuicklinks"></div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+		<div id="membersModal" class="modal fade" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title">Home Members</h4>
+		      </div>
+		      <div class="modal-body">
+		        <div id="divMembers">
+		        	<table id="membersTable">
+		        	</table>
+		        </div>
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
