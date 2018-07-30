@@ -312,7 +312,7 @@ function showAttachment(spanid) {
         success: function (result) {
         	
         	if (title.indexOf('.pdf') > -1) {
-        		var obj = $('<object>').attr('width', '100%').attr('data', 'data:application/pdf;base64, ' + result).
+        		var obj = $('<object>').attr('width', '100%').height('600px').attr('data', 'data:application/pdf;base64, ' + result).
         			attr('type', 'application/pdf');
         		
         		$('#attachmentDiv').append(obj);

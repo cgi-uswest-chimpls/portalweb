@@ -78,3 +78,7 @@
 	font-size: 12px;
 	font-weight: normal;
 }
+
+.pdf-modal {
+	height: 600px !important;
+}
