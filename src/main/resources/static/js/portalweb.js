@@ -441,6 +441,9 @@ function sendMessage() {
 	        type: "post",
 	        contentType: "application/json",
 	        success: function (result) {
+	        	if ($('#attachmentUpload').val() != '') {
+	        		sendAttachment(userIdPrvdOrg);
+	        	}
 	        	displaySentMessage(title,content);
 	        	$('#createMessageModal').hide();
 	        	clearMessageModal();
@@ -451,6 +454,40 @@ function sendMessage() {
 	        	clearMessageModal();
 	        }
 	    });
+}
+
+function sendAttachment(idprvdorg) {
+	
+	// get most recent message I sent
+    $.ajax({
+        url: 'messages/fromme/' + idprvdorg,
+    	datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	
+        	// jquery ajax does not handle file upload, using xhr instead
+        	
+        	var id = result[0].id;
+        	
+        	var file = document.getElementById('attachmentUpload').files[0];
+        	
+        	var formData = new FormData();
+        	
+        	formData.append('file', file);
+        	
+        	var xhr = new XMLHttpRequest();
+        	
+        	xhr.open('POST', 'attachments/add/' + id + "/" + file.name, true);
+        	
+        	xhr.send(formData);
+
+        },
+        error: function () {
+        	$('#sentMessages').html("<div>An error occurred trying to access the endpoint " + 'messages/fromme/' + idprvdorg + "</div>");
+        }
+    });
+	
 }
 
 function currentDate() {

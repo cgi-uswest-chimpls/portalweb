@@ -23,7 +23,8 @@ public class PortalwebApplication extends WebSecurityConfigurerAdapter {
 	    	.antMatchers("/login", "/login**", "/webjars/**", "/error**").permitAll()
 	        .anyRequest().authenticated()
 	        .and().logout().logoutSuccessUrl("/").permitAll()
-	        .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+	        .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+	        .and().csrf().disable();
 	}
 	
 }

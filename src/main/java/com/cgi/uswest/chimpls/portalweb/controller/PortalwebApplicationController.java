@@ -1,5 +1,6 @@
 package com.cgi.uswest.chimpls.portalweb.controller;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cgi.uswest.chimpls.portalweb.clients.AddressClient;
 import com.cgi.uswest.chimpls.portalweb.clients.AssignmentClient;
@@ -366,6 +368,15 @@ public class PortalwebApplicationController {
 		  return new String(encoded);
 	      
 
+	  }
+	  
+	  @RequestMapping("attachments/add/{idmessage}/{filename}")
+	  public String addAttachmentForMessage(@PathVariable String idmessage,
+			  @PathVariable String filename,
+			  @RequestParam MultipartFile file) throws IOException {
+		  
+		  
+		  return attachmentsClient.postAttachmentToMessage(idmessage, filename, file.getBytes());
 	  }
 
 }
