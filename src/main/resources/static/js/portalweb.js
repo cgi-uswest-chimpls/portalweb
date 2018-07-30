@@ -478,6 +478,13 @@ function sendAttachment(idprvdorg) {
         	
         	var xhr = new XMLHttpRequest();
         	
+        	xhr.onreadystatechange = function () {
+        		  if(xhr.readyState === 4 && xhr.status === 200) {
+        		    	loadAttachmentsForMessage(id, 'from', parseInt($('#totalSentMessages').val()) - 1);
+        		    	document.getElementById("attachmentUpload").value = "";
+        		  }
+        	};
+        	
         	xhr.open('POST', 'attachments/add/' + id + "/" + file.name, true);
         	
         	xhr.send(formData);
@@ -538,7 +545,16 @@ function displaySentMessage(title,content) {
 	
 	sentHeaderRow.append(colName);
 	
-	var colTitle = $('<div>').addClass('col-sm-3').html(title);
+	var colTitle = $('<div>').addClass('col-sm-3').html(title + '&nbsp;');
+	
+	var paperclipWrapper = $('<span>').attr('onclick', 'showAttachment(\'fromMessageAttachments'+index+'\')');
+	
+	var paperclip = $('<span>').attr('id', 'fromMessageAttachments'+index).attr('style', 'display:none;').
+		addClass('fa').addClass('fa-paperclip');
+		
+	paperclipWrapper.append(paperclip);
+	
+	colTitle.append(paperclipWrapper);
 	
 	sentHeaderRow.append(colTitle);
 	
