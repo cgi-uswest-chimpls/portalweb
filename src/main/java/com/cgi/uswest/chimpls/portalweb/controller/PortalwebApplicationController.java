@@ -40,6 +40,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cgi.uswest.chimpls.portalweb.clients.AddressClient;
 import com.cgi.uswest.chimpls.portalweb.clients.AssignmentClient;
 import com.cgi.uswest.chimpls.portalweb.clients.AttachmentsClient;
+import com.cgi.uswest.chimpls.portalweb.clients.MembersClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PaymentsClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PersonClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PlacementsClient;
@@ -50,6 +51,7 @@ import com.cgi.uswest.chimpls.portalweb.objects.Address;
 import com.cgi.uswest.chimpls.portalweb.objects.Assignment;
 import com.cgi.uswest.chimpls.portalweb.objects.Attachment;
 import com.cgi.uswest.chimpls.portalweb.objects.Episode;
+import com.cgi.uswest.chimpls.portalweb.objects.Member;
 import com.cgi.uswest.chimpls.portalweb.objects.Message;
 import com.cgi.uswest.chimpls.portalweb.objects.MessagesDropdownValue;
 import com.cgi.uswest.chimpls.portalweb.objects.Payment;
@@ -105,6 +107,9 @@ public class PortalwebApplicationController {
 	
 	@Autowired
 	private AttachmentsClient attachmentsClient;
+	
+	@Autowired
+	private MembersClient membersClient;
 	
 	  @RequestMapping("currentUser")
 	  public User user(Principal principal) {
@@ -379,4 +384,25 @@ public class PortalwebApplicationController {
 		  return attachmentsClient.postAttachmentToMessage(idmessage, filename, file.getBytes());
 	  }
 
+	  @RequestMapping("membersByProvider/{idprvdorg}")
+	  public List<Member> findMembersByProvider(@PathVariable String idprvdorg) {
+		  List<Member> members = membersClient.getMembersByProvider(new BigDecimal(idprvdorg));
+		  
+		  for(int i = 0; i < members.size(); i++) {
+			  
+			  Member nextMember = members.get(i);
+			  
+			  Person person = personClient.getPersonDataByIdprsn(nextMember.getIdprsn());
+			  
+			  nextMember.setNmfrst(person.getNmfrst());
+			  nextMember.setNmlst(person.getNmlst());
+			  nextMember.setDtbrth(person.getDtbrth());
+			  nextMember.setQtage(person.getQtage());
+			  nextMember.setTximagelink(person.getTximagelink());
+			  
+		  }
+		  
+		  return members;
+	  }
+	  
 }

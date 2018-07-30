@@ -688,7 +688,14 @@ function typeFormat(value, row, index){
 		return 'Address';
 	} else if (value=='2'){
 		return 'Phone';
-	} else {
+	} else if (value=='3') {
+		return 'Add Member in Home';
+	} else if (value=='4') {
+		return 'Remove Member in Home';
+	} else if (value=='5') {
+		return 'Change Member Name';
+	}
+	else {
 		return '';
 	}
 }
