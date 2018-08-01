@@ -980,6 +980,12 @@ function meetingsTableRowStyle(row, index) {
 	}
 }
 
+function clearMeetingsModal() {
+	$('#divAllMeetings').html('');
+	var table = $('<table>').attr('id', 'allMeetingsTable');
+	$('#divAllMeetings').append(table);
+}
+
 function loadPrimaryCaseWorker(idprsn, idcase) {
     $.ajax({
         url: 'casePrimaryAssignment/' + idcase,
