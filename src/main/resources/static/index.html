@@ -429,12 +429,49 @@
 					</div>	
 					<div class="schedule-divider">
 					<div class="col-sm-3">
-						This is the schedule of events for child {{idprsn}}
+						<div id="divMeetings{{idprsn}}">
+						</div>
 					</div>
 					</div>
 				</div>
 				</div>
 			{{/each}}
+		</script>
+		
+		<script id="meetingsTemplate" type="text/x-handlebars-template">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12">
+						Events
+					</div>
+				</div>
+				<br/>
+				{{#each this}}
+				{{#if @first}}
+				<div class="row">
+					<div class="col-sm-3">
+						{{formatDateSlashes dtstart}}
+					</div>
+					<div class="col-sm-3">
+						{{txtype}}
+					</div>
+					<div class="col-sm-3">
+						(times)
+					</div>
+					<div class="col-sm-3">
+						{{txlocation}}
+					</div>
+				</div>
+				{{else}}
+				<div class="row">
+					<div class="col-sm-2 col-sm-offset-10">
+						More...
+					</div>
+				</div>		
+				{{/if}}
+
+				{{/each}}
+			</div>
 		</script>
 		
 		<script id="providerDetailsTemplate" type="text/x-handlebars-template">

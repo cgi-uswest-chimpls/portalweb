@@ -3,6 +3,7 @@ var handlebars_providerDetailsTemplate;
 var handlebars_quicklinksTemplate;
 var handlebars_messagesTemplate;
 var handlebars_sentMessagesTemplate;
+var handlebars_meetingsTemplate;
 
 $.ajaxSetup({
 	beforeSend : function(xhr, settings) {
@@ -36,6 +37,7 @@ function loadProvider() {
 	handlebars_quicklinksTemplate = Handlebars.compile($('#quicklinksTemplate').html());
 	handlebars_messagesTemplate = Handlebars.compile($('#messagesTemplate').html());
 	handlebars_sentMessagesTemplate = Handlebars.compile($('#sentMessagesTemplate').html());
+	handlebars_meetingsTemplate = Handlebars.compile($('#meetingsTemplate').html());
 	
 	registerHandlebarsHelpers();
 	
@@ -213,6 +215,22 @@ function members() {
 	}
 
 function registerHandlebarsHelpers() {
+	
+	Handlebars.registerHelper("lessthan", function(conditional, options) {
+	    if (conditional < options.hash.equals) {
+	        return options.fn(this);
+	    } else {
+	        return options.inverse(this);
+	    }
+	});
+	
+	Handlebars.registerHelper("equal", function(conditional, options) {
+	    if (conditional = options.hash.equals) {
+	        return options.fn(this);
+	    } else {
+	        return options.inverse(this);
+	    }
+	});
 	
 	Handlebars.registerHelper('formatDateSlashes', function(text, url) {
 		  text = Handlebars.Utils.escapeExpression(text);
@@ -796,8 +814,6 @@ function loadProviderPlacements(idprvdorg) {
         contentType: "application/json",
         success: function (result) {
         	
-        	var data = JSON.stringify(result);
-
         	$('#divChildrenInPlacement').html(handlebars_placementsTemplate(result));
         	
         	
@@ -807,6 +823,7 @@ function loadProviderPlacements(idprvdorg) {
         	    loadChildInPlacementData(obj.idprsn);
         	    loadPrimaryCaseWorker(obj.idprsn, obj.idcase);
         	    loadChildAddressData(obj.idprsn);
+        	    loadCurrentMeetings(obj.idprsn);
         	}
         	
         	
@@ -861,6 +878,22 @@ function spanChildPaymentIcon(idprsn) {
 	return "&nbsp;&nbsp;" +
 	'<span id="spanChildPayments' + idprsn + '" onclick="paymentsByChild(' + idprsn + ');">' +
 	'<span class="fa fa-hand-holding-usd"></span></span>';
+}
+
+function loadCurrentMeetings(idprsn) {
+    $.ajax({
+        url: 'meetings/currentMeetingsByPerson/' + idprsn,
+        datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	$('#divMeetings'+idprsn).html(handlebars_meetingsTemplate(result));
+        	
+        },
+        error: function () {
+        	$('#divMeetings'+idprsn).html("An error occurred trying to access the endpoint " + 'meetings/currentMeetingsByPerson/' + idprsn);
+        }
+    });	
 }
 
 function loadPrimaryCaseWorker(idprsn, idcase) {
