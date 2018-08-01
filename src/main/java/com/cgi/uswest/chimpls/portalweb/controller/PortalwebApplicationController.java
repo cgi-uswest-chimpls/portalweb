@@ -417,7 +417,21 @@ public class PortalwebApplicationController {
 	  
 	  @RequestMapping("meetings/allMeetingsByPerson/{idprsn}") 
 	   public List<Meeting> findAllMeetingsByPerson(@PathVariable("idprsn") String idprsn) {
-		  return meetingsClient.getAllMeetingsByPerson(idprsn);
+		  List<Meeting> meetings = meetingsClient.getAllMeetingsByPerson(idprsn);
+		  
+		  for(int i = 0; i < meetings.size(); i++) {
+			  Meeting meeting = meetings.get(i);
+			  
+			  if (meeting.getDtstart() != null && meeting.getDtstart().after(new Date())) {
+				  meeting.setCurrent("Y");
+			  }
+			  else {
+				  meeting.setCurrent("N");
+			  }
+		  }
+		  
+		  return meetings;
+		  
 	  }
 	  
 }

@@ -15,11 +15,12 @@ public class Meeting {
 	private Timestamp dtstart;
 	private Timestamp dtend;
 	private String txlocation;
+	private String current;
 	
 	Meeting() {}
 	
 	public Meeting(String id, BigDecimal idmeeting, BigDecimal idprsn, BigDecimal cdtype, String txtype,
-			Timestamp dtstart, Timestamp dtend, String txlocation) {
+			Timestamp dtstart, Timestamp dtend, String txlocation, String current) {
 		
 		super();
 		this.id = id;
@@ -30,6 +31,7 @@ public class Meeting {
 		this.dtstart = dtstart;
 		this.dtend = dtend;
 		this.txlocation = txlocation;
+		this.current = current;
 		
 	}
 
@@ -95,6 +97,14 @@ public class Meeting {
 
 	public void setTxlocation(String txlocation) {
 		this.txlocation = txlocation;
+	}
+
+	public String getCurrent() {
+		return current;
+	}
+
+	public void setCurrent(String current) {
+		this.current = current;
 	}
 	
 }

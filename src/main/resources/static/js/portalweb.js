@@ -250,7 +250,7 @@ function registerHandlebarsHelpers() {
 		  var day = parseInt(text.substring(8,10));
 
 		  var hour = parseInt(text.substring(11,13));
-		  var minute = parseInt(text.substring(14,16));
+		  var minute = text.substring(14,16);
 		  
 		  var ampm = "AM";
 		  if (hour > 12) {
@@ -260,6 +260,21 @@ function registerHandlebarsHelpers() {
 		  
 		  return new Handlebars.SafeString(month + "/" + day + "/" + year + 
 				  " " + hour + ":" + minute + " " + ampm);
+		
+	});
+	
+	Handlebars.registerHelper('formatDateTimeOnly', function(text, url) {
+		
+		  var hour = parseInt(text.substring(11,13));
+		  var minute = text.substring(14,16);
+		  
+		  var ampm = "AM";
+		  if (hour > 12) {
+			  hour = hour - 12;
+			  ampm = "PM";
+		  }
+		  
+		  return new Handlebars.SafeString(hour + ":" + minute + " " + ampm);
 		
 	});
 	
@@ -274,13 +289,26 @@ function formatDateSlashes(value, row, index, field) {
 	  return month + "/" + day + "/" + year;
 }
 
+function formatDateTimeOnly(value, row, index, field) {
+	  var hour = parseInt(value.substring(11,13));
+	  var minute = value.substring(14,16);
+	  
+	  var ampm = "AM";
+	  if (hour > 12) {
+		  hour = hour - 12;
+		  ampm = "PM";
+	  }
+	  
+	  return new Handlebars.SafeString(hour + ":" + minute + " " + ampm);
+}
+
 function formatDateSlashesWithTimestamp(value, row, index, field) {
 	  var year = value.substring(0,4);
 	  var month = parseInt(value.substring(5,7));
 	  var day = parseInt(value.substring(8,10));
 
 	  var hour = parseInt(value.substring(11,13));
-	  var minute = parseInt(value.substring(14,16));
+	  var minute = value.substring(14,16);
 	  
 	  var ampm = "AM";
 	  if (hour > 12) {
@@ -894,6 +922,62 @@ function loadCurrentMeetings(idprsn) {
         	$('#divMeetings'+idprsn).html("An error occurred trying to access the endpoint " + 'meetings/currentMeetingsByPerson/' + idprsn);
         }
     });	
+}
+
+function viewAllMeetings(idprsn) {
+	
+	   $.ajax({
+	        url: 'meetings/allMeetingsByPerson/' + idprsn,
+	    	datatype: 'json',
+	        type: "get",
+	        contentType: "application/json",
+	        success: function (result) {
+	        	
+	        	$('#allMeetingsTable').bootstrapTable({
+	        		data: result,
+	        		classes: 'table table-hover table-striped',
+	        		rowStyle: meetingsTableRowStyle,
+	        		columns: [{
+	        			field: 'txtype',
+	        			title: 'Type',
+	        			sortable: true
+	        		}, {
+	        			field: 'dtstart',
+	        			title: 'Date',
+	        			formatter: formatDateSlashes,
+	        			sortable: true
+	        		}, {
+	        			field: 'dtstart',
+	        			title: 'Start Time',
+	        			formatter: formatDateTimeOnly,
+	        			sortable: true
+	        		}, {
+	        			field: 'dtend',
+	        			title: 'End Time',
+	        			formatter: formatDateTimeOnly,
+	        			sortable: true
+	        		}, {
+	        			field: 'txlocation',
+	        			title: 'Location',
+	        			sortable: true
+	        		}]
+	        	});
+	        	
+	        	$('#allMeetingsModal').modal('show');
+	        },
+	        error: function () {
+	        }	        
+	    });
+	
+}
+
+function meetingsTableRowStyle(row, index) {
+	if (row.current == 'N') {
+		return {classes: "meeting-gray"};
+	}
+	else {
+		return {};
+	}
 }
 
 function loadPrimaryCaseWorker(idprsn, idcase) {

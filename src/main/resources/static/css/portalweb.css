@@ -79,6 +79,16 @@
 	font-weight: normal;
 }
 
+.event-display {
+	font-size: 10px;
+	font-weight: normal;
+	color: black;
+}
+
+.meeting-gray {
+	color: gray;
+}
+
 .pdf-modal {
 	height: 600px !important;
 }
