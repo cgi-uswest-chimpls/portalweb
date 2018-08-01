@@ -91,6 +91,26 @@
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 
+		<div id="allMeetingsModal" class="modal fade" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title">Events</h4>
+		      </div>
+		      <div class="modal-body">
+		        <div id="divAllMeetings">
+		        	<table id="allMeetingsTable">
+		        	</table>
+		        </div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
 		<div id="membersModal" class="modal fade" tabindex="-1" role="dialog">
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
@@ -105,7 +125,7 @@
 		        </div>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 		      </div>
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
@@ -125,7 +145,7 @@
 		        </div>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 		      </div>
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
@@ -145,7 +165,7 @@
 		        </div>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 		      </div>
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
@@ -296,9 +316,9 @@
 						</span>
 					</div>
 					<div class="col-sm-2">
-						<span id="createMessage" onclick="createMessage();" class="messages-create">
+						<a href="#" id="createMessage" onclick="createMessage();" class="messages-create">
 							Create
-						</span>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -389,7 +409,7 @@
 
 					</div>
 					</div>
-					<div class="col-sm-5">
+					<div class="col-sm-3">
 						<div class="row">
 							<div class="col-sm-2">
 
@@ -424,17 +444,44 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-sm-3">
 						<div id="divChildAddress{{idprsn}}"></div>
 					</div>	
 					<div class="schedule-divider">
-					<div class="col-sm-3">
-						This is the schedule of events for child {{idprsn}}
+					<div class="col-sm-4">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-sm-12">
+									<a href="#" onclick="viewAllMeetings({{idprsn}})">Events</a>
+								</div>
+							</div>
+							<br/>
+							<div id="divMeetings{{idprsn}}">
+							</div>
+						</div>
 					</div>
 					</div>
 				</div>
 				</div>
 			{{/each}}
+		</script>
+		
+		<script id="meetingsTemplate" type="text/x-handlebars-template">
+
+				{{#each this}}
+				<div class="row event-display">
+					<div class="col-sm-6">
+						{{txtype}}
+					</div>
+					<div class="col-sm-2">
+						{{formatDateSlashes dtstart}}
+					</div>
+					<div class="col-sm-4">
+						{{formatDateTimeOnly dtstart}} - {{formatDateTimeOnly dtend}}
+					</div>
+				</div>
+				{{/each}}
+
 		</script>
 		
 		<script id="providerDetailsTemplate" type="text/x-handlebars-template">

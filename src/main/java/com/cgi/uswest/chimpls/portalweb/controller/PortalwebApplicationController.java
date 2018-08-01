@@ -40,6 +40,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cgi.uswest.chimpls.portalweb.clients.AddressClient;
 import com.cgi.uswest.chimpls.portalweb.clients.AssignmentClient;
 import com.cgi.uswest.chimpls.portalweb.clients.AttachmentsClient;
+import com.cgi.uswest.chimpls.portalweb.clients.MeetingsClient;
 import com.cgi.uswest.chimpls.portalweb.clients.MembersClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PaymentsClient;
 import com.cgi.uswest.chimpls.portalweb.clients.PersonClient;
@@ -51,6 +52,7 @@ import com.cgi.uswest.chimpls.portalweb.objects.Address;
 import com.cgi.uswest.chimpls.portalweb.objects.Assignment;
 import com.cgi.uswest.chimpls.portalweb.objects.Attachment;
 import com.cgi.uswest.chimpls.portalweb.objects.Episode;
+import com.cgi.uswest.chimpls.portalweb.objects.Meeting;
 import com.cgi.uswest.chimpls.portalweb.objects.Member;
 import com.cgi.uswest.chimpls.portalweb.objects.Message;
 import com.cgi.uswest.chimpls.portalweb.objects.MessagesDropdownValue;
@@ -110,6 +112,9 @@ public class PortalwebApplicationController {
 	
 	@Autowired
 	private MembersClient membersClient;
+	
+	@Autowired
+	private MeetingsClient meetingsClient;
 	
 	  @RequestMapping("currentUser")
 	  public User user(Principal principal) {
@@ -403,6 +408,30 @@ public class PortalwebApplicationController {
 		  }
 		  
 		  return members;
+	  }
+	  
+	  @RequestMapping("meetings/currentMeetingsByPerson/{idprsn}") 
+	   public List<Meeting> findCurrentMeetingsByPerson(@PathVariable("idprsn") String idprsn) {
+		  return meetingsClient.getCurrentMeetingsByPerson(idprsn);
+	  }
+	  
+	  @RequestMapping("meetings/allMeetingsByPerson/{idprsn}") 
+	   public List<Meeting> findAllMeetingsByPerson(@PathVariable("idprsn") String idprsn) {
+		  List<Meeting> meetings = meetingsClient.getAllMeetingsByPerson(idprsn);
+		  
+		  for(int i = 0; i < meetings.size(); i++) {
+			  Meeting meeting = meetings.get(i);
+			  
+			  if (meeting.getDtstart() != null && meeting.getDtstart().after(new Date())) {
+				  meeting.setCurrent("Y");
+			  }
+			  else {
+				  meeting.setCurrent("N");
+			  }
+		  }
+		  
+		  return meetings;
+		  
 	  }
 	  
 }

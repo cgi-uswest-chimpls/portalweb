@@ -3,6 +3,7 @@ var handlebars_providerDetailsTemplate;
 var handlebars_quicklinksTemplate;
 var handlebars_messagesTemplate;
 var handlebars_sentMessagesTemplate;
+var handlebars_meetingsTemplate;
 
 $.ajaxSetup({
 	beforeSend : function(xhr, settings) {
@@ -36,6 +37,7 @@ function loadProvider() {
 	handlebars_quicklinksTemplate = Handlebars.compile($('#quicklinksTemplate').html());
 	handlebars_messagesTemplate = Handlebars.compile($('#messagesTemplate').html());
 	handlebars_sentMessagesTemplate = Handlebars.compile($('#sentMessagesTemplate').html());
+	handlebars_meetingsTemplate = Handlebars.compile($('#meetingsTemplate').html());
 	
 	registerHandlebarsHelpers();
 	
@@ -214,6 +216,22 @@ function members() {
 
 function registerHandlebarsHelpers() {
 	
+	Handlebars.registerHelper("lessthan", function(conditional, options) {
+	    if (conditional < options.hash.equals) {
+	        return options.fn(this);
+	    } else {
+	        return options.inverse(this);
+	    }
+	});
+	
+	Handlebars.registerHelper("equal", function(conditional, options) {
+	    if (conditional = options.hash.equals) {
+	        return options.fn(this);
+	    } else {
+	        return options.inverse(this);
+	    }
+	});
+	
 	Handlebars.registerHelper('formatDateSlashes', function(text, url) {
 		  text = Handlebars.Utils.escapeExpression(text);
 		  url  = Handlebars.Utils.escapeExpression(url);
@@ -232,7 +250,7 @@ function registerHandlebarsHelpers() {
 		  var day = parseInt(text.substring(8,10));
 
 		  var hour = parseInt(text.substring(11,13));
-		  var minute = parseInt(text.substring(14,16));
+		  var minute = text.substring(14,16);
 		  
 		  var ampm = "AM";
 		  if (hour > 12) {
@@ -242,6 +260,21 @@ function registerHandlebarsHelpers() {
 		  
 		  return new Handlebars.SafeString(month + "/" + day + "/" + year + 
 				  " " + hour + ":" + minute + " " + ampm);
+		
+	});
+	
+	Handlebars.registerHelper('formatDateTimeOnly', function(text, url) {
+		
+		  var hour = parseInt(text.substring(11,13));
+		  var minute = text.substring(14,16);
+		  
+		  var ampm = "AM";
+		  if (hour > 12) {
+			  hour = hour - 12;
+			  ampm = "PM";
+		  }
+		  
+		  return new Handlebars.SafeString(hour + ":" + minute + " " + ampm);
 		
 	});
 	
@@ -256,13 +289,26 @@ function formatDateSlashes(value, row, index, field) {
 	  return month + "/" + day + "/" + year;
 }
 
+function formatDateTimeOnly(value, row, index, field) {
+	  var hour = parseInt(value.substring(11,13));
+	  var minute = value.substring(14,16);
+	  
+	  var ampm = "AM";
+	  if (hour > 12) {
+		  hour = hour - 12;
+		  ampm = "PM";
+	  }
+	  
+	  return new Handlebars.SafeString(hour + ":" + minute + " " + ampm);
+}
+
 function formatDateSlashesWithTimestamp(value, row, index, field) {
 	  var year = value.substring(0,4);
 	  var month = parseInt(value.substring(5,7));
 	  var day = parseInt(value.substring(8,10));
 
 	  var hour = parseInt(value.substring(11,13));
-	  var minute = parseInt(value.substring(14,16));
+	  var minute = value.substring(14,16);
 	  
 	  var ampm = "AM";
 	  if (hour > 12) {
@@ -796,8 +842,6 @@ function loadProviderPlacements(idprvdorg) {
         contentType: "application/json",
         success: function (result) {
         	
-        	var data = JSON.stringify(result);
-
         	$('#divChildrenInPlacement').html(handlebars_placementsTemplate(result));
         	
         	
@@ -807,6 +851,7 @@ function loadProviderPlacements(idprvdorg) {
         	    loadChildInPlacementData(obj.idprsn);
         	    loadPrimaryCaseWorker(obj.idprsn, obj.idcase);
         	    loadChildAddressData(obj.idprsn);
+        	    loadCurrentMeetings(obj.idprsn);
         	}
         	
         	
@@ -861,6 +906,78 @@ function spanChildPaymentIcon(idprsn) {
 	return "&nbsp;&nbsp;" +
 	'<span id="spanChildPayments' + idprsn + '" onclick="paymentsByChild(' + idprsn + ');">' +
 	'<span class="fa fa-hand-holding-usd"></span></span>';
+}
+
+function loadCurrentMeetings(idprsn) {
+    $.ajax({
+        url: 'meetings/currentMeetingsByPerson/' + idprsn,
+        datatype: 'json',
+        type: "get",
+        contentType: "application/json",
+        success: function (result) {
+        	$('#divMeetings'+idprsn).html(handlebars_meetingsTemplate(result));
+        	
+        },
+        error: function () {
+        	$('#divMeetings'+idprsn).html("An error occurred trying to access the endpoint " + 'meetings/currentMeetingsByPerson/' + idprsn);
+        }
+    });	
+}
+
+function viewAllMeetings(idprsn) {
+	
+	   $.ajax({
+	        url: 'meetings/allMeetingsByPerson/' + idprsn,
+	    	datatype: 'json',
+	        type: "get",
+	        contentType: "application/json",
+	        success: function (result) {
+	        	
+	        	$('#allMeetingsTable').bootstrapTable({
+	        		data: result,
+	        		classes: 'table table-hover table-striped',
+	        		rowStyle: meetingsTableRowStyle,
+	        		columns: [{
+	        			field: 'txtype',
+	        			title: 'Type',
+	        			sortable: true
+	        		}, {
+	        			field: 'dtstart',
+	        			title: 'Date',
+	        			formatter: formatDateSlashes,
+	        			sortable: true
+	        		}, {
+	        			field: 'dtstart',
+	        			title: 'Start Time',
+	        			formatter: formatDateTimeOnly,
+	        			sortable: true
+	        		}, {
+	        			field: 'dtend',
+	        			title: 'End Time',
+	        			formatter: formatDateTimeOnly,
+	        			sortable: true
+	        		}, {
+	        			field: 'txlocation',
+	        			title: 'Location',
+	        			sortable: true
+	        		}]
+	        	});
+	        	
+	        	$('#allMeetingsModal').modal('show');
+	        },
+	        error: function () {
+	        }	        
+	    });
+	
+}
+
+function meetingsTableRowStyle(row, index) {
+	if (row.current == 'N') {
+		return {classes: "meeting-gray"};
+	}
+	else {
+		return {};
+	}
 }
 
 function loadPrimaryCaseWorker(idprsn, idcase) {
