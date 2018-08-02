@@ -200,8 +200,10 @@ function members() {
 	        			title: 'In Home',
 	        			sortable: true
 	        		}, {
-	        		    title: 'Update',
-	        		    sortable: false
+	        			field: 'flinhome',
+	        			title: 'Update',
+	        		    sortable: false,
+	        			formatter: LinkFormatter
 	        		}]
 	        	});
 	        	
@@ -213,6 +215,54 @@ function members() {
 	    });
 		
 	}
+
+function LinkFormatter(value, row, index) {
+	var txLink ="";
+	if (value == "Y"){
+		txLink = "Update to Out of Home";
+	} else {
+		txLink = "Update to In Home";
+	}
+	//return "<a href='/userid/id:"+row.id+"'>"+txLink+"</a>";
+	var m_flInhome = value;
+	var m_idprsn = row.idprsn;
+	var m_idprvdorg = row.idprvdorg;
+	return "<div id='memberUpdtLink'><a onclick='saveMemberSacwisUpdateReq('"+m_flInhome+"',"+m_idprsn+","+m_idprvdorg+");'>"+txLink+"</a></div>";
+	
+}
+
+
+function saveMemberSacwisUpdateReq(flinhome, idprsn, idprvdorg){
+	//alert(document.getElementById('id_grp').value);
+	var m_txUpdate = '';
+	if (flinhome == 'Y'){
+		m_txUpdate = 'Person is out of home';
+	} else {
+		m_txUpdate = 'Person is in home';
+	}
+	var m_url = 'sacwisupdate/add?id_grp=' + idprsn 
+			    +'&cd_grp=P'
+			    +'&cd_type=3'
+			    +'&tx_update=' + m_txUpdate 
+			    +'&id_cr='+idprvdorg 
+			    +'&cd_stat=P';
+	
+	$.ajax({
+        url: m_url,
+        datatype: 'String',
+        type: "POST",
+        contentType: "application/json",
+        success: function (result) {
+        	alert('saved');
+//        	document.getElementById('memberUpdtLink').innerHtml = 'Saved';
+//        	document.getElementById('memberUpdtLink').styleClass = '';
+        },
+        error: function () {
+        	alert('error');
+        }
+    });
+	
+}
 
 function registerHandlebarsHelpers() {
 	
