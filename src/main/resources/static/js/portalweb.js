@@ -224,25 +224,42 @@ function LinkFormatter(value, row, index) {
 		txLink = "Update to In Home";
 	}
 	//return "<a href='/userid/id:"+row.id+"'>"+txLink+"</a>";
-	var m_flInhome = value;
+	var m_flInhome = row.flinhome;
+	
+	if (m_flInhome == "Y"){
+		m_flInhomeParm = 1;
+	} else {
+		m_flInhomeParm = 2;
+	}
+	
 	var m_idprsn = row.idprsn;
 	var m_idprvdorg = row.idprvdorg;
-	return "<div id='memberUpdtLink'><a onclick='saveMemberSacwisUpdateReq('"+m_flInhome+"',"+m_idprsn+","+m_idprvdorg+");'>"+txLink+"</a></div>";
+	
+	return "<div id='memberUpdtLink"+index+"'><a onclick='saveMemberSacwisUpdateReq("+m_flInhomeParm+","+m_idprsn+","+m_idprvdorg +","+index + ");'>"+txLink+"</a></div>";
 	
 }
 
 
-function saveMemberSacwisUpdateReq(flinhome, idprsn, idprvdorg){
+function saveMemberSacwisUpdateReq(flinhome, idprsn, idprvdorg, index){
 	//alert(document.getElementById('id_grp').value);
+	if (flinhome == "1"){
+		m_flInhomeParm = "Y";
+	} else {
+		m_flInhomeParm = "N";
+	}
+	
 	var m_txUpdate = '';
-	if (flinhome == 'Y'){
+	var m_cdType = "";
+	if (m_flInhomeParm == 'Y'){
 		m_txUpdate = 'Person is out of home';
+		m_cdType = 4; //Remove Member in Home
 	} else {
 		m_txUpdate = 'Person is in home';
+		m_cdType = 3; //Add Member in Home
 	}
 	var m_url = 'sacwisupdate/add?id_grp=' + idprsn 
 			    +'&cd_grp=P'
-			    +'&cd_type=3'
+			    +'&cd_type='+m_cdType
 			    +'&tx_update=' + m_txUpdate 
 			    +'&id_cr='+idprvdorg 
 			    +'&cd_stat=P';
@@ -253,9 +270,9 @@ function saveMemberSacwisUpdateReq(flinhome, idprsn, idprvdorg){
         type: "POST",
         contentType: "application/json",
         success: function (result) {
-        	alert('saved');
-//        	document.getElementById('memberUpdtLink').innerHtml = 'Saved';
-//        	document.getElementById('memberUpdtLink').styleClass = '';
+//        	alert('saved');
+        	document.getElementById('memberUpdtLink'+index).innerHTML = 'Saved';
+        	document.getElementById('memberUpdtLink'+index).styleClass = '';
         },
         error: function () {
         	alert('error');
