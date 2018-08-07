@@ -28,10 +28,7 @@ function logout() {
 }
 
 function loadProvider() {
-	
-    $(".authenticated").show();
-    $(".unauthenticated").hide();
-	
+		
 	handlebars_placementsTemplate = Handlebars.compile($('#placementsTemplate').html());
 	handlebars_providerDetailsTemplate = Handlebars.compile($('#providerDetailsTemplate').html());
 	handlebars_quicklinksTemplate = Handlebars.compile($('#quicklinksTemplate').html());
@@ -49,6 +46,10 @@ function loadProvider() {
         type: "get",
         contentType: "application/json",
         success: function (result) {
+        	
+            $(".authenticated").show();
+            $(".unauthenticated").hide();
+        	
         	$('#userCounty').val(result.county);
         	$('#userIdPrvdOrg').val(result.idprvdorg);
         	
@@ -59,7 +60,7 @@ function loadProvider() {
         	loadProviderPlacements(idprvdorg);
         },
         error: function () {
-        	$('#divProviderDetail').html("<div style='color:white;'>An error occurred trying to access the endpoint /currentUser");
+        	window.location = "/login";
         }
     });
 	

@@ -26,10 +26,10 @@
 		<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
 	</head>
 	<body onload="loadProvider();">
-		<div class="unauthenticated">
+		<div class="unauthenticated" style="display:none;">
 			<a href="/login"><span class="fab fa-google"></span>&nbsp;&nbsp;Sign in with Google</a>
 		</div>
-		<div class="authenticated">
+		<div class="authenticated" style="display:none;">
 			<input type="hidden" id="userCounty" />
 			<input type="hidden" id="userIdPrvdOrg" />
 			<input type="hidden" id="totalSentMessages" />
