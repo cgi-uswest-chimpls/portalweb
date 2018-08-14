@@ -196,7 +196,7 @@ public class PortalwebApplicationController {
 		  return paymentsClient.getPaymentsByPerson(idprsn);
 	  }
 
-	  @RequestMapping("sacwisupdate/add")
+	  @RequestMapping("ccwisupdate/add")
 	  public @ResponseBody String addSacwisUpdates(@RequestParam BigDecimal id_grp,
 			    @RequestParam String	cd_grp,
 				@RequestParam BigDecimal cd_type, 
@@ -360,7 +360,7 @@ public class PortalwebApplicationController {
 		  return values;
 	  }
 	  
-	  @RequestMapping("sacwisupdate/all")
+	  @RequestMapping("ccwisupdate/all")
 	   public List<SacwisUpdate> findSacwisUpdateByProvider() {
 		  return sacwisUpdateClient.getAllSacwisUpdates();
 	  }

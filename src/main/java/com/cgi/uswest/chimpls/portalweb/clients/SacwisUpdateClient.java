@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cgi.uswest.chimpls.portalweb.objects.SacwisUpdate;
 
-@FeignClient(name = "sacwisUpdate", configuration = SacwisUpdateClientConfiguration.class)
+@FeignClient(name = "ccwisUpdate", configuration = SacwisUpdateClientConfiguration.class)
 public interface SacwisUpdateClient {
 	@RequestMapping(method = RequestMethod.GET, value = "/sacwisupdate/all", 
     		consumes = "application/json")

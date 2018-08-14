@@ -258,7 +258,7 @@ function saveMemberSacwisUpdateReq(flinhome, idprsn, idprvdorg, index){
 		m_txUpdate = 'Person is in home';
 		m_cdType = 3; //Add Member in Home
 	}
-	var m_url = 'sacwisupdate/add?id_grp=' + idprsn 
+	var m_url = 'ccwisupdate/add?id_grp=' + idprsn 
 			    +'&cd_grp=P'
 			    +'&cd_type='+m_cdType
 			    +'&tx_update=' + m_txUpdate 
@@ -781,7 +781,7 @@ function loadProviderAddress(idprvd) {
         	
         	$('#divProviderAddress').html('Address: '+result.tx_adress 
         			+ '&nbsp;&nbsp;&nbsp;&nbsp;<a class="provider-license" href="#" onclick="editPrvdAddress('+idprvd+');">Edit</a>'
-        			+ '&nbsp;&nbsp;&nbsp;&nbsp;<a class="provider-license" href="#" onclick="loadSacwisUpdateReq('+idprvd+');">Sacwis Update History</a>');
+        			+ '&nbsp;&nbsp;&nbsp;&nbsp;<a class="provider-license" href="#" onclick="loadSacwisUpdateReq('+idprvd+');">CCWIS Update History</a>');
         },
         error: function () {
         	$('#divProviderAddress').html("An error occurred trying to access the endpoint " + 'address/providerAddress/' + idprvd);
@@ -803,7 +803,7 @@ function editPrvdAddress(p_idPrvd){
 function loadSacwisUpdateReq(p_idPrvd) {
 
    $.ajax({
-        url: 'sacwisupdate/all' ,
+        url: 'ccwisupdate/all' ,
     	datatype: 'json',
         type: "get",
         contentType: "application/json",
@@ -840,7 +840,7 @@ function loadSacwisUpdateReq(p_idPrvd) {
         	$('#sacwisUpdateReqModal').modal('show');
         },
         error: function () {
-        	$('#sacwisUpdateReqTable').html("<div style='color:white;'>An error occurred trying to access the endpoint sacwisupdate/all");
+        	$('#sacwisUpdateReqTable').html("<div style='color:white;'>An error occurred trying to access the endpoint ccwisupdate/all");
         }
     });
     
@@ -877,7 +877,7 @@ function enblDsblTxt(){
 
 function saveSacwisUpdate(){
 	//alert(document.getElementById('id_grp').value);
-	var m_url = 'sacwisupdate/add?id_grp=' + document.getElementById('id_grp').value 
+	var m_url = 'ccwisupdate/add?id_grp=' + document.getElementById('id_grp').value 
 			    +'&cd_grp=F'
 			    +'&cd_type=' + document.getElementById('updateType').value 
 			    +'&tx_update=' + document.getElementById('txUpdt').value 
@@ -918,7 +918,8 @@ function loadProviderPlacements(idprvdorg) {
 
         	    loadChildInPlacementData(obj.idprsn);
         	    loadPrimaryCaseWorker(obj.idprsn, obj.idcase);
-        	    loadChildAddressData(obj.idprsn);
+        	    // remove child address load
+        	    // loadChildAddressData(obj.idprsn);
         	    loadCurrentMeetings(obj.idprsn);
         	}
         	

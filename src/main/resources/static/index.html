@@ -177,7 +177,7 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title">Sacwis Update</h4>
+		        <h4 class="modal-title">CCWIS Update</h4>
 		      </div>
 		      <div class="modal-body">
 		        	<div class="container" id="dataContainer">
@@ -271,7 +271,7 @@
 		    <div class="modal-content" style="width:750px;">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title">Sacwis Update Requests</h4>
+		        <h4 class="modal-title">CCWIS Update Requests</h4>
 		      </div>
 		      <div class="modal-body" style="width:700px;">
 		        <div id="divSacwisUpdateReq">
@@ -409,7 +409,7 @@
 
 					</div>
 					</div>
-					<div class="col-sm-3">
+					<div class="col-sm-4">
 						<div class="row">
 							<div class="col-sm-2">
 
@@ -444,11 +444,8 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-3">
-						<div id="divChildAddress{{idprsn}}"></div>
-					</div>	
 					<div class="schedule-divider">
-					<div class="col-sm-4">
+					<div class="col-sm-6">
 						<div class="container-fluid">
 							<div class="row">
 								<div class="col-sm-12">
@@ -470,13 +467,13 @@
 
 				{{#each this}}
 				<div class="row event-display">
-					<div class="col-sm-6">
+					<div class="col-sm-5">
 						{{txtype}}
 					</div>
 					<div class="col-sm-2">
 						{{formatDateSlashes dtstart}}
 					</div>
-					<div class="col-sm-4">
+					<div class="col-sm-5">
 						{{formatDateTimeOnly dtstart}} - {{formatDateTimeOnly dtend}}
 					</div>
 				</div>
@@ -488,22 +485,8 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-sm-12">
-						<div class="provider-welcome">
-							Welcome
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-12">
 						<div class="provider-name">
 							{{nm_prvd}}
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-12">
-						<div class="provider-license">
-							{{tx_license}}
 						</div>
 					</div>
 				</div>
