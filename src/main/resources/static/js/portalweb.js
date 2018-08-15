@@ -960,7 +960,7 @@ function loadChildInPlacementData(idprsn) {
         success: function (result) {
         	
         	$('#divChildName'+idprsn).html(result.nmfrst + ' ' + result.nmlst + spanChildPaymentIcon(idprsn));
-        	$('#divChildPlan'+idprsn).html(result.nmfrst);   
+        	//$('#divChildPlan'+idprsn).html(result.nmfrst);   
         	$('#divChildAge'+idprsn).html('Age: ' + result.qtage);
         	$('#divChildImage'+idprsn).html('<img src="'+result.tximagelink+'" class="img-circle cw-portal-navbar-image" ></img>');
         },
