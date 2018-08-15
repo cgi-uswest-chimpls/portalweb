@@ -101,6 +101,8 @@ function paymentsByChild(idprsn) {
 	        	
 	        	$('#paymentsByChildTitle').html('Payments for ' + result[0].txpersonname);
 	        	
+	        	$('#paymentsByChildTable').bootstrapTable('destroy');
+	        	
 	        	$('#paymentsByChildTable').bootstrapTable({
 	        		data: result,
 	        		classes: 'table table-hover table-striped',
