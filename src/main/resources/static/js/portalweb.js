@@ -31,7 +31,7 @@ function loadProvider() {
 		
 	handlebars_placementsTemplate = Handlebars.compile($('#placementsTemplate').html());
 	handlebars_providerDetailsTemplate = Handlebars.compile($('#providerDetailsTemplate').html());
-	handlebars_quicklinksTemplate = Handlebars.compile($('#quicklinksTemplate').html());
+	//handlebars_quicklinksTemplate = Handlebars.compile($('#quicklinksTemplate').html());
 	handlebars_messagesTemplate = Handlebars.compile($('#messagesTemplate').html());
 	handlebars_sentMessagesTemplate = Handlebars.compile($('#sentMessagesTemplate').html());
 	handlebars_meetingsTemplate = Handlebars.compile($('#meetingsTemplate').html());
@@ -71,7 +71,7 @@ function loadProvider() {
 }
 
 function help() {
-	
+	/*
 	var userCounty = $('#userCounty').val();
 	
     $.ajax({
@@ -88,6 +88,8 @@ function help() {
         	$('#divQuicklinks').html("<div style='color:white;'>An error occurred trying to access the endpoint /quicklinks/" + userCounty);
         }
     });
+    */
+	$('#quicklinksModal').modal('show');
 }
 
 function paymentsByChild(idprsn) {
@@ -961,7 +963,7 @@ function loadChildInPlacementData(idprsn) {
         contentType: "application/json",
         success: function (result) {
         	
-        	$('#divChildName'+idprsn).html(result.nmfrst + ' ' + result.nmlst + spanChildPaymentIcon(idprsn));
+        	$('#divChildName'+idprsn).html('<a onclick=showDemographicInfo('+idprsn+');>'+result.nmfrst + ' ' + result.nmlst +'</a>' + spanChildPaymentIcon(idprsn));
         	//$('#divChildPlan'+idprsn).html(result.nmfrst);   
         	$('#divChildAge'+idprsn).html('Age: ' + result.qtage);
         	$('#divChildImage'+idprsn).html('<img src="'+result.tximagelink+'" class="img-circle cw-portal-navbar-image" ></img>');
@@ -971,6 +973,38 @@ function loadChildInPlacementData(idprsn) {
         }
     });	
 	
+}
+
+function showDemographicInfo(idprsn){
+	//alert(idprsn);
+	//$('#demographicInfoModal').modal('show');
+	 $.ajax({
+	        url: 'person/' + idprsn,
+	        datatype: 'json',
+	        type: "get",
+	        contentType: "application/json",
+	        success: function (result) {
+	        	$('#demographicInfo').html(
+	        			'<div class="row">'+
+	        			'<div class="col-sm-5">Gender: '+result.gender+'</div>'+
+	        			'<div class="col-sm-5">U.S. Citizen: '+result.uscitizen+'</div>'+
+	        			'</div>'+
+	        			'<div class="row">'+
+	        			'<div class="col-sm-5">Birth Place: '+result.birthplace+'</div>'+
+	        			'<div class="col-sm-5">Religion: '+result.religion+'</div>'+
+	        			'</div>'+
+	        			'<div class="row">'+
+	        			'<div class="col-sm-5">Primary Language: '+result.primarylang+'</div>'+
+	        			'<div class="col-sm-5">Secondary Language: '+result.secondlang+'</div>'+
+	        			'</div>'
+	        			
+	        	);
+	        	$('#demographicInfoModal').modal('show');
+	        },
+	        error: function () {
+	        	$('#demographicInfo'+idprsn).html("An error occurred trying to access the endpoint " + 'person/' + idprsn);
+	        }
+	    });	
 }
 
 function spanChildPaymentIcon(idprsn) {

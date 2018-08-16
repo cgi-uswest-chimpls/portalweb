@@ -13,6 +13,14 @@ public class Person {
 	private BigDecimal qtage;
 	private String tximagelink;
 	
+	private String gender;
+	private String uscitizen;
+	private String birthplace;
+	private String maritalstat;
+	private String religion;
+	private String primarylang;
+	private String secondlang;
+	
 	Person() {}
 	
 	public Person(String idprsn, String nmfrst, String nmlst, Timestamp dtbrth, BigDecimal qtage,
@@ -26,6 +34,13 @@ public class Person {
 		this.qtage = qtage;
 		this.tximagelink = tximagelink;
 
+		this.gender = gender;
+		this.uscitizen = uscitizen;
+		this.birthplace = birthplace;
+		this.maritalstat = maritalstat;
+		this.religion = religion;
+		this.primarylang = primarylang;
+		this.secondlang = secondlang;
 	}
 
 	public String getIdprsn() {
@@ -74,6 +89,62 @@ public class Person {
 
 	public void setTximagelink(String tximagelink) {
 		this.tximagelink = tximagelink;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getUscitizen() {
+		return uscitizen;
+	}
+
+	public void setUscitizen(String uscitizen) {
+		this.uscitizen = uscitizen;
+	}
+
+	public String getBirthplace() {
+		return birthplace;
+	}
+
+	public void setBirthplace(String birthplace) {
+		this.birthplace = birthplace;
+	}
+
+	public String getMaritalstat() {
+		return maritalstat;
+	}
+
+	public void setMaritalstat(String maritalstat) {
+		this.maritalstat = maritalstat;
+	}
+
+	public String getReligion() {
+		return religion;
+	}
+
+	public void setReligion(String religion) {
+		this.religion = religion;
+	}
+
+	public String getPrimarylang() {
+		return primarylang;
+	}
+
+	public void setPrimarylang(String primarylang) {
+		this.primarylang = primarylang;
+	}
+
+	public String getSecondlang() {
+		return secondlang;
+	}
+
+	public void setSecondlang(String secondlang) {
+		this.secondlang = secondlang;
 	}
 	
 }
