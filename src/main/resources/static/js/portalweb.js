@@ -567,7 +567,7 @@ function toggleSentMessageBody(index) {
 	}
 }
 
-function createMessage(idprvdorg) {
+function createMessage(selectedPerson, subject) {
 	   var userIdPrvdOrg = $('#userIdPrvdOrg').val();
 		
 	   $.ajax({
@@ -581,7 +581,17 @@ function createMessage(idprvdorg) {
 
 	        	for (var i = 0; i < result.length; i++) {
 	        		var option = $('<option>').val(result[i].idPrsn).html(result[i].name);
+	        		
+	        		if (result[i].idPrsn == selectedPerson) {
+	        			option.attr('selected', 'selected');
+	        		}
+	        		
 	        		select.append(option);
+	        		    		
+	        	}
+	        	
+	        	if (selectedPerson != null && selectedPerson != 'undefined') {
+	        		select.attr('disabled', 'true');
 	        	}
 	        	
 	        	$('#divMessagesDropdown').html("").append(select);
@@ -1091,6 +1101,11 @@ function clearMeetingsModal() {
 	$('#divAllMeetings').append(table);
 }
 
+function createMessageToCaseWorker(idprsn_kid, subject) {
+	var idprsn_worker = $('#idPrimaryCaseWorker'+idprsn_kid).val();
+	createMessage(idprsn_worker, subject);
+}
+
 function loadPrimaryCaseWorker(idprsn, idcase) {
     $.ajax({
         url: 'casePrimaryAssignment/' + idcase,
@@ -1098,6 +1113,9 @@ function loadPrimaryCaseWorker(idprsn, idcase) {
         type: "get",
         contentType: "application/json",
         success: function (result) {
+        	// idprsn passed in is the id of the kid
+        	// result.id_prsn is the id of the case worker
+        	$('#idPrimaryCaseWorker'+idprsn).val(result.id_prsn);
         	$('#divPrimaryCaseWorker'+idprsn).html("Case Worker: " + result.nm_prsn);
         },
         error: function () {
