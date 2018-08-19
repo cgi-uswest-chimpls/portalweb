@@ -567,6 +567,11 @@ function toggleSentMessageBody(index) {
 	}
 }
 
+function createMissingFromCareMessage(selectedPerson) {
+	var kidname = $('#childName'+selectedPerson).val();
+	createMessageToCaseWorker(selectedPerson, 'CRITICAL: ' + kidname + ' is missing from care');
+}
+
 function createMessage(selectedPerson, subject) {
 	   var userIdPrvdOrg = $('#userIdPrvdOrg').val();
 		
@@ -595,6 +600,10 @@ function createMessage(selectedPerson, subject) {
 	        	}
 	        	
 	        	$('#divMessagesDropdown').html("").append(select);
+	        	
+	        	if (subject != null && subject != '') {
+	        		$('#sendMessageSubject').val(subject);
+	        	}
 	        	
 	        	$('#createMessageModal').modal('show');
 	        },
@@ -973,6 +982,7 @@ function loadChildInPlacementData(idprsn) {
         contentType: "application/json",
         success: function (result) {
         	
+        	$('#childName'+idprsn).val(result.nmfrst + ' ' + result.nmlst);
         	$('#divChildName'+idprsn).html('<a onclick=showDemographicInfo('+idprsn+');>'+result.nmfrst + ' ' + result.nmlst +'</a>' + spanChildPaymentIcon(idprsn));
         	//$('#divChildPlan'+idprsn).html(result.nmfrst);   
         	$('#divChildAge'+idprsn).html('Age: ' + result.qtage);
@@ -1019,8 +1029,8 @@ function showDemographicInfo(idprsn){
 
 function spanChildPaymentIcon(idprsn) {
 	return "&nbsp;&nbsp;" +
-	'<span id="spanChildPayments' + idprsn + '" onclick="paymentsByChild(' + idprsn + ');">' +
-	'<span class="fa fa-hand-holding-usd"></span></span>';
+	'<a href="#" id="spanChildPayments' + idprsn + '" onclick="paymentsByChild(' + idprsn + ');">' +
+	'<span class="fa fa-hand-holding-usd"></span></a>';
 }
 
 function loadCurrentMeetings(idprsn) {

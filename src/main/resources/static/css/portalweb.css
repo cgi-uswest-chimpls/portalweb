@@ -37,6 +37,14 @@
 	color: white;
 }
 
+.portal-navbar-button {
+	color: white;
+}
+
+.portal-navbar-button :hover {
+	color: #b2c1d1;
+}
+
 .cw-portal-navbar-image {
 	border-radius: 50%;
 	border: 2px solid white;
