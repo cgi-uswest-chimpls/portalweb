@@ -8,6 +8,7 @@
 	margin-bottom: 5px;
 	box-shadow: 2px 2px gray;
 	color: #3264CD;
+	font-size: 12px;
 }
 
 .kid-profile {
@@ -88,7 +89,7 @@
 }
 
 .event-display {
-	font-size: 10px;
+	font-size: 12px;
 	font-weight: normal;
 	color: black;
 }
